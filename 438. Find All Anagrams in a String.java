@@ -24,6 +24,7 @@ class Solution {
                 char c = s.charAt(left);
                 if (map.containsKey(c)) {
                     map.put(c, map.get(c) + 1);
+                    // 如果不等于1等于2之类的说明后面有重复的，就算不更改size也无所谓
                     if (map.get(c) == 1) {
                         size++;
                     }
