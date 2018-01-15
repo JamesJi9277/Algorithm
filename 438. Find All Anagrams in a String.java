@@ -4,14 +4,15 @@ class Solution {
         if (s == null || s.length() == 0 || p == null || p.length() == 0) {
             return result;
         }
-        HashMap<Character, Integer> map = convertToHashMap(p);
+        HashMap<Character, Integer> map = toHashMap(p);
+        int size = map.size();
         int left = 0;
         int right = 0;
-        int size = map.size();
         while (right < s.length()) {
-            if (map.containsKey(s.charAt(right))) {
-                map.put(s.charAt(right), map.get(s.charAt(right)) - 1);
-                if (map.get(s.charAt(right)) == 0) {
+            char c = s.charAt(right);
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) == 0) {
                     size--;
                 }
                 if (size == 0) {
@@ -21,25 +22,24 @@ class Solution {
             right++;
             
             if (right - left == p.length()) {
-                char c = s.charAt(left);
-                if (map.containsKey(c)) {
-                    map.put(c, map.get(c) + 1);
-                    // 如果不等于1等于2之类的说明后面有重复的，就算不更改size也无所谓
-                    if (map.get(c) == 1) {
+                char c1 = s.charAt(left);
+                if (map.containsKey(c1)) {
+                    map.put(c1, map.get(c1) + 1);
+                    if (map.get(c1) == 1) {
                         size++;
                     }
                 }
                 left++;
             }
+            
         }
         return result;
     }
-    private HashMap<Character, Integer> convertToHashMap(String s) {
+    private HashMap<Character, Integer> toHashMap(String s) {
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for (int i = 0; i < s.length(); i++) {
-            if (map.containsKey(s.charAt(i))) {
-                int count = map.get(s.charAt(i));
-                map.put(s.charAt(i), ++count);
+        for(int i = 0; i < s.length(); i++) {
+            if(map.containsKey(s.charAt(i))) {
+                map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
             } else {
                 map.put(s.charAt(i), 1);
             }
