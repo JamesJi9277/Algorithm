@@ -28,10 +28,10 @@ class Solution {
         }
         int count = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (i != 0 && nums[i] == nums[i - 1]) {
+            if (i != 0 && nums[i - 1] == nums[i]) {
                 count++;
             } else {
-                nums[i - count] = nums[i];
+                nums[i - count] = nums[i]; //把不重复的放到它该有的地方去
             }
         }
         return nums.length - count;
