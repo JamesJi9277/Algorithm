@@ -8,8 +8,8 @@
  * }
  */
 class Solution {
-    public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> result = new ArrayList<Double>();
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
         if (root == null) {
             return result;
         }
@@ -28,15 +28,8 @@ class Solution {
                     deque.offer(node.right);
                 }
             }
-            result.add(getAve(temp));
+            result.add(0, temp);
         }
         return result;
-    }
-    private Double getAve(List<Integer> list) {
-        double sum = 0;
-        for (int i : list) {
-            sum += (double)i;
-        }
-        return (double) (sum / list.size());
     }
 }

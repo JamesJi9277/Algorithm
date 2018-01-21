@@ -8,12 +8,13 @@
  * }
  */
 class Solution {
-    public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> result = new ArrayList<Double>();
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
         if (root == null) {
             return result;
         }
         Deque<TreeNode> deque = new LinkedList<TreeNode>();
+        boolean isReverse = false;
         deque.offer(root);
         while (!deque.isEmpty()) {
             int size = deque.size();
@@ -28,15 +29,12 @@ class Solution {
                     deque.offer(node.right);
                 }
             }
-            result.add(getAve(temp));
+            if (isReverse) {
+                Collections.reverse(temp);
+            }
+            result.add(temp);
+            isReverse = !isReverse;
         }
         return result;
-    }
-    private Double getAve(List<Integer> list) {
-        double sum = 0;
-        for (int i : list) {
-            sum += (double)i;
-        }
-        return (double) (sum / list.size());
     }
 }
