@@ -16,27 +16,27 @@ class Solution {
         Deque<TreeNode> deque = new LinkedList<TreeNode>();
         deque.offer(root);
         while (!deque.isEmpty()) {
-            int size = deque.size();
             List<Integer> temp = new ArrayList<Integer>();
+            int size = deque.size();
             while (size-- > 0) {
-                TreeNode node = deque.poll();
-                temp.add(node.val);
-                if (node.left != null) {
-                    deque.offer(node.left);
+                root = deque.poll();
+                temp.add(root.val);
+                if (root.left != null) {
+                    deque.offer(root.left);
                 }
-                if (node.right != null) {
-                    deque.offer(node.right);
+                if (root.right != null) {
+                    deque.offer(root.right);
                 }
             }
             result.add(getAve(temp));
         }
         return result;
     }
-    private Double getAve(List<Integer> list) {
+    private double getAve(List<Integer> list) {
         double sum = 0;
         for (int i : list) {
             sum += (double)i;
         }
-        return (double) (sum / list.size());
+        return (double)sum / list.size();
     }
 }
