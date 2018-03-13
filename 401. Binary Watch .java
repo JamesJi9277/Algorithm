@@ -1,3 +1,5 @@
+// 穷举法
+
 class Solution {
     String[][] hour = {{"0"},
             {"1", "2", "4", "8"},
