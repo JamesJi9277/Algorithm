@@ -19,6 +19,8 @@ class Solution {
         if (root.left == null && root.right == null) {
             return sum;
         }
+        // 已经算好了当前的sum
+        // 可以直接套用到下面的递归里面去
         return helper(root.left, sum) + helper(root.right, sum);
     }
 }
