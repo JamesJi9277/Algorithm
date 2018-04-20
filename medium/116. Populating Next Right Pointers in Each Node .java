@@ -8,7 +8,6 @@
  */
 public class Solution {
     public void connect(TreeLinkNode root) {
-        // 前提是给出的是一个满二叉树
         if (root == null) {
             return;
         }
