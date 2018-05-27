@@ -1,19 +1,20 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (numCourses < 0) {
+        if (prerequisites == null || numCourses < 0) {
             return false;
         }
-        int numNode = 0;
-        HashMap<Integer, ArrayList<Integer>> graph = new HashMap<Integer, ArrayList<Integer>>();
+        HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
         int[] indegree = new int[numCourses];
-        Queue<Integer> queue = new LinkedList<Integer>();
         for (int i = 0; i < numCourses; i++) {
-            graph.put(i, new ArrayList<Integer>());
+            map.put(i, new ArrayList<Integer>());
         }
         for (int[] edge : prerequisites) {
+            map.get(edge[0]).add(edge[1]);
+            
             indegree[edge[1]]++;
-            graph.get(edge[0]).add(edge[1]);
         }
+        int count = 0;
+        Queue<Integer> queue = new LinkedList<Integer>();
         for (int i = 0; i < indegree.length; i++) {
             if (indegree[i] == 0) {
                 queue.offer(i);
@@ -21,14 +22,14 @@ class Solution {
         }
         while (!queue.isEmpty()) {
             int temp = queue.poll();
-            numNode++;
-            for (int i : graph.get(temp)) {
+            count++;
+            for (int i : map.get(temp)) {
                 indegree[i]--;
                 if (indegree[i] == 0) {
                     queue.offer(i);
                 }
             }
         }
-        return numNode == numCourses;
+        return count == numCourses;
     }
 }
