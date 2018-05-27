@@ -27,3 +27,24 @@ class Solution {
         return Math.max(tasks.length, (max - 1) * (n + 1) + count);
     }
 }
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        if (tasks == null || tasks.length == 0) {
+            return 0;
+        }
+        int count = 0;
+        int max = 0;
+        int[] map = new int[26];
+        for (int i = 0; i < tasks.length; i++) {
+            map[tasks[i] - 'A']++;
+            if (map[tasks[i] - 'A'] == max) {
+                count++;
+            } else if (map[tasks[i] - 'A'] > max) {
+                max = map[tasks[i] - 'A'];
+                count = 1;
+            }
+        }
+        return Math.max((n + 1) * (max - 1) + count, tasks.length);
+    }
+}
