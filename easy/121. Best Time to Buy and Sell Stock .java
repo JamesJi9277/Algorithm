@@ -42,3 +42,20 @@ class Solution {
         return res;
     }
 }
+
+
+// this is a common solution
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+        int ti10 = 0;
+        int ti11 = Integer.MIN_VALUE;
+        for (int price : prices) {
+            ti10 = Math.max(ti10, ti11 + price);
+            ti11 = Math.max(ti11, -price);
+        }
+        return ti10;
+    }
+}
