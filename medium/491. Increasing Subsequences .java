@@ -59,3 +59,25 @@ public class Solution {
         }
     }
 }
+
+class Solution {
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> temp = new ArrayList<Integer>();
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        helper(res, temp, nums, 0);
+        return res;
+    }
+    private void helper(List<List<Integer>> res, List<Integer> temp, int[] nums, int index) {
+        for (int i = index; i < nums.length; i++) {
+            temp.add(nums[i]);
+            if (temp.size() >= 2 && !res.contains(temp) && temp.get(temp.size() - 1) >= temp.get(temp.size() - 2)) {
+                res.add(new ArrayList<Integer>(temp));
+            }
+            helper(res, temp, nums, i + 1);
+            temp.remove(temp.size() - 1);
+        }
+    }
+}
