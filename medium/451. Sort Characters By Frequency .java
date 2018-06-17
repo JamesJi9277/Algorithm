@@ -39,3 +39,51 @@ class Pair implements Comparable<Pair> {
         return that.value - this.value;
     }
 }
+
+
+class Solution {
+    public String frequencySort(String s) {
+        if (s == null || s.length() < 2) {
+            return s;
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        List<Pair> list = new ArrayList<>();
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            Pair pair = new Pair(entry.getKey(), entry.getValue());
+            list.add(pair);
+        }
+        Collections.sort(list);
+        StringBuilder sb = new StringBuilder();
+        for (Pair pair : list) {
+            int count = pair.getCount();
+            char c = pair.getChar();
+            while (count > 0) {
+                sb.append(c);
+                count--;
+            }
+        }
+        return sb.toString();
+    }
+}
+class Pair implements Comparable<Pair> {
+    char c;
+    int count;
+    public Pair() {};
+    public Pair(char c, int count) {
+        this.c = c;
+        this.count = count;
+    }
+    public int getCount() {
+        return count;
+    }
+    public char getChar() {
+        return c;
+    }
+    @Override 
+    public int compareTo(Pair p1) {
+        return p1.getCount() - this.getCount();
+    }
+}

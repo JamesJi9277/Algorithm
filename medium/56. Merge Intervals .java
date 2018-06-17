@@ -37,3 +37,42 @@ class Solution {
         }
     }
 }
+
+// second write
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        if (intervals == null || intervals.size() == 0) {
+            return intervals;
+        }
+        Comp comp = new Comp();
+        Collections.sort(intervals, comp);
+        List<Interval> res = new ArrayList<Interval>();
+        for (Interval interval : intervals) {
+            if (res.size() == 0 || res.get(res.size() - 1).end < interval.start) {
+                res.add(interval);
+            } else {
+                res.get(res.size() - 1).end = Math.max(res.get(res.size() - 1).end, interval.end);
+            }
+        }
+        return res;
+    }
+}
+class Comp implements Comparator<Interval> {
+    public Comp() {};
+    public int compare(Interval v1, Interval v2) {
+        if (v1.start == v2.start) {
+            return v1.end - v2.end;
+        } else {
+            return v1.start - v2.start;
+        }
+    }
+}
