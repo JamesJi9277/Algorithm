@@ -55,3 +55,33 @@ class Solution {
         return count;
     }
 }
+
+
+class Solution {
+    public int numMatchingSubseq(String S, String[] words) {
+        HashMap<Character, Deque<String>> map = new HashMap<Character, Deque<String>>();
+        if (words == null || words.length == 0) {
+            return 0;
+        }
+        int count = 0;
+        for (char c = 'a'; c <= 'z'; c++) {
+            map.put(c, new LinkedList<String>());
+        }
+        for (String s : words) {
+            map.get(s.charAt(0)).addLast(s);
+        }
+        for (char c : S.toCharArray()) {
+            Deque<String> queue = map.get(c);
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String word = queue.removeFirst();
+                if (word.length() == 1) {
+                    count++;
+                } else {
+                    map.get(word.charAt(1)).addLast(word.substring(1));
+                }
+            }
+        }
+        return count;
+    }
+}

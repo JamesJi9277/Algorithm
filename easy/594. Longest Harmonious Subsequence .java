@@ -26,6 +26,30 @@ class Solution {
         if (nums == null || nums.length == 0) {
             return 0;
         }
+        Arrays.sort(nums);
+        int left = 0;
+        int right = 0;
+        int count = 0;
+        while (right < nums.length) {
+            if (nums[right] - nums[left] < 1) {
+                right++;
+            } else if (nums[right] - nums[left] == 1) {
+                count = Math.max(count, right - left + 1);
+                right++;
+            } else {
+                left++;
+            }
+        }
+        return count;
+    }
+}
+
+
+class Solution {
+    public int findLHS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
         int left = 0;
         int right = 0;
         int max = 0;

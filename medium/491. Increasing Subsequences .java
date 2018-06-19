@@ -1,38 +1,21 @@
-class Solution {
+public class Solution {
     public List<List<Integer>> findSubsequences(int[] nums) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        if (nums == null || nums.length == 0) {
-            return res;
-        }
-        List<Integer> temp = new ArrayList<Integer>();
-        HashSet<List<Integer>> set = new HashSet<>();
-        helper(nums, res, temp, 0, set);
-        return res;
+        List<List<Integer>> res = new LinkedList<>();
+        helper(new LinkedList<Integer>(), 0, nums, res);
+        return res; 
     }
-    private void helper(int[] nums, List<List<Integer>> res, List<Integer> temp, int index, HashSet<List<Integer>> set) {
-        if (index == nums.length) {
-            return;
-        }
-        for (int i = index; i < nums.length; i++) {
-            temp.add(nums[i]);
-            if (valid(temp) && !set.contains(temp)) {
-                res.add(new ArrayList<Integer>(temp));
-                set.add(temp);
-            }
-            helper(nums, res, temp, i + 1, set);
-            temp.remove(temp.size() - 1);
-        }
-    }
-    private boolean valid(List<Integer> list) {
-        if (list.size() < 2) {
-            return false;
-        }
-        for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) < list.get(i - 1)) {
-                return false;
+    private void helper(LinkedList<Integer> list, int index, int[] nums, List<List<Integer>> res){
+        if(list.size()>1) res.add(new LinkedList<Integer>(list));
+        Set<Integer> used = new HashSet<>();
+        for(int i = index; i<nums.length; i++){
+            if(used.contains(nums[i])) continue;
+            if(list.size()==0 || nums[i]>=list.peekLast()){
+                used.add(nums[i]);
+                list.add(nums[i]); 
+                helper(list, i+1, nums, res);
+                list.remove(list.size()-1);
             }
         }
-        return true;
     }
 }
 
