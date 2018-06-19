@@ -35,3 +35,41 @@ class Solution {
         return max;
     }
 }
+
+
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] res = new int[nums.length];
+        Arrays.fill(res, 1);
+        int max = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                res[i] = res[i - 1] + 1;
+                max = Math.max(max, res[i]);
+            }
+        }
+        return max;
+    }
+}
+
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int count = 1;
+        int max = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                count++;
+                max = Math.max(max, count);
+            } else {
+                count = 1;
+            }
+        }
+        return max;
+    }
+}

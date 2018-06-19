@@ -49,7 +49,7 @@ class Solution {
 }
 
 https://leetcode.com/problems/longest-palindromic-subsequence/discuss/99101/Straight-forward-Java-DP-solution
-
+// self write, bug free
 class Solution {
     public int longestPalindromeSubseq(String s) {
         if (s == null || s.length() == 0) {
@@ -59,7 +59,7 @@ class Solution {
         int[][] dp = new int[length][length];
         for (int i = length - 1; i >= 0; i--) {
             dp[i][i] = 1;
-            for (int j = i + 1; j < s.length(); j++) {
+            for (int j = i + 1; j < length; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
                     dp[i][j] = dp[i + 1][j - 1] + 2;
                 } else {

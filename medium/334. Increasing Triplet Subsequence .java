@@ -57,3 +57,23 @@ class Solution {
         return false;
     }
 }
+
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        if (nums == null || nums.length < 3) {
+            return false;
+        }
+        int first = nums[0];
+        int second = Integer.MAX_VALUE;
+        for (int i : nums) {
+            if (i < first) {
+                first = i;
+            } else if (first < i && i < second) {
+                second = i;
+            } else if (i > second) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
