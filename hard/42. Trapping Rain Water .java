@@ -3,24 +3,23 @@ class Solution {
         if (height == null || height.length < 3) {
             return 0;
         }
-        int res = 0;
-        int leftMax = height[0];
-        int rightMax = height[height.length - 1];
         int left = 0;
         int right = height.length - 1;
+        int leftMax = height[0];
+        int rightMax = height[right];
+        int res = 0;
         while (left <= right) {
             if (leftMax < rightMax) {
-                res += Math.max(0, leftMax - height[left]);
+                res += Math.max(leftMax - height[left], 0);
                 leftMax = Math.max(leftMax, height[left++]);
             } else {
-                res += Math.max(0, rightMax - height[right]);
+                res += Math.max(rightMax - height[right], 0);
                 rightMax = Math.max(rightMax, height[right--]);
             }
         }
         return res;
     }
 }
-
 class Solution {
     public int trap(int[] height) {
         if (height == null || height.length < 3) {
