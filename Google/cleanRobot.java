@@ -5,36 +5,62 @@ turnLeft(k): turn left k*90 degrees.
 turnRight(k): make right turn
 move(): return true if can, and vise versa
 */
-public class CleaningRobot {
+
+class CleaningRobot {
 	private int[][] direction = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
 	public void run() {
 		Set<Integer> visited = new HashSet<>();
-		dfs(0, 0, visited);//假定从起点开始,x = 0, y = 0
+		dfs(0, 0, visited);
 	}
 
 	private void dfs(int row, int col, HashSet<Integer> visited) {
-		visited.add(hash(row, col));
-		clean();//自带的方法，表示清洁当前的xy 空格
+		clean();
 
 		for (int i = 0; i < 4; i++) {
 			int x = row + direction[i][0];
 			int y = col + direction[i][1];
-			if (!visit.contains(hash(x, y)) && move()) {
+
+			if (!visited.contains(hash(x, y)) && move()) {
+				visited.add(hash(x, y));
 				dfs(x, y, visited);
 			}
-			turnLeft(1);
+			turnLeft(2);
 		}
 		goBack();
+	}
+
+	private void hash(int x, int y) {
+		return 12 * x + 34 * y;
 	}
 
 	private void goBack() {
 		turnLeft(2);
 		move();
-		turnLeft(2);
+		turnLeft();
 	}
+}
 
-	private int hash(int x, int y) {
-		return 12 * x + 34 * y;
+
+public class CleaningRobot {
+	public void run() {
+		Set<Integer> visited = new HashSet<Integer>();
+		dfs(0, 0, visited);
+	}
+	private void dfs(int row, int col, Set<Integer> visited) {
+		for(int i = 0; i < 4; i++) {
+			int x = row + direction[i][0];
+			int y = col + direction[i][1];
+			if (move() && !visited.contains(hash(x, y))) {
+				dfs(x, y, visited);
+			}
+			turnLeft();
+		}
+		goBack();
+	}
+	private void goBack() {
+		turnLeft(2);
+		move();
+		turnLeft(2);
 	}
 }
