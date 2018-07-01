@@ -17,20 +17,26 @@ class Solution {
         return len;
     }
 }
-
-with k flips
-int max = 0;
-int zero = 0;
-int left = 0;
-for (int i = 0; i < nums.length; i++) {
-    if (nums[i] == 0) {
-        zero++;
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        return helper(nums, 1);
     }
-    while (zero > k) {
-        if (nums[left] == 0) {
-            left++;
-            zero--;
+    private int helper(int[] nums, int k) {
+        int max = 0;
+        int count = 0;
+        int left = 0;
+        for (int right = 0; right < nums.length; right++) {
+            if (nums[right] == 0) {
+                count++;
+            }
+            while (count > k) {
+                if (nums[left] == 0) {
+                    count--;
+                }
+                left++;
+            }
+            max = Math.max(max, right - left + 1);
         }
+        return max;
     }
-    max = Math.max(max, i - left + 1);
 }
