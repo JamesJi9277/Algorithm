@@ -52,7 +52,10 @@ public class CleaningRobot {
 			int x = row + direction[i][0];
 			int y = col + direction[i][1];
 			if (move() && !visited.contains(hash(x, y))) {
+				visited.add(hash(x, y));
+				clean();
 				dfs(x, y, visited);
+				goBack();
 			}
 			turnLeft();
 		}
@@ -61,6 +64,34 @@ public class CleaningRobot {
 	private void goBack() {
 		turnLeft(2);
 		move();
-		turnLeft(2);
+		tuenLeft(2);
+	}
+}
+
+
+public class CleaningRobot {
+	int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+	public void clean(int[][] room, int[] start) {
+		if (room == null || room.length == 0 || room[0].length == 0) {
+			return;
+		}
+		Set<Integer> visited = new HashSet<>();
+		dfs(room, start[0], start[1], visited);
+	}
+	private void dfs(int[][] room, int row, int col, Set<Integer> visited) {
+		if (row < 0 || row >= room.length || col < 0 || col >= room[0].length || visited.contains(hash(row, col))) {
+			return;
+		}
+		for (int[] dir : directions) {
+			int x = row + dir[0];
+			int y = col + dir[1];
+			if (!visited.contains(hash(x, y))) {
+				move(row, col, x, y);
+				visited.add(hash(x, y));
+				clean();
+				dfs(room, x, y, visited);
+				move(x, y, row, col);//move back
+			}
+		}
 	}
 }

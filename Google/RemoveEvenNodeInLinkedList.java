@@ -17,3 +17,23 @@ public class Solution {
 		return head;
 	}
 }
+
+public class Solution {
+	public ListNode removeEven(Listnode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode temp = head;
+		while (temp != null) {
+			if (temp.next != null && temp.next.next != null) {
+				ListNode next = temp.next.next;
+				temp.next.next = null;
+				temp.next = next;
+			} else {
+				temp.next = null;
+				temp = temp.next;
+			}
+		}
+		return head;
+	}
+}

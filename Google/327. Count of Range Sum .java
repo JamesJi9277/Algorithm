@@ -50,4 +50,45 @@ class Solution {
     }
 }
 
-// dicide and conquer
+// divide and conquer
+public class Solution {
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        long[] sum = new long[nums.length];
+        int index = 0;
+        while (index < nums.length) {
+            if (index == 0) {
+                sum[index] = nums[index];
+            } else {
+                sum[index] = sum[index - 1] + nums[index];
+            }
+            index++;
+        }
+        return helper(nums, sum, lower, upper, 0, nums.length - 1);
+    }
+    private int helper(int[] nums, long[] sum, int lower, int upper, int start, int end) {
+        if (start > end) {
+            return 0;
+        }
+        if (start == end) {
+            if (nums[start] >= lower && nums[end] <= upper) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        int mid = (start + end) / 2;
+        int total = 0;
+        for (int i = start; i <= mid; i++) {
+            for (int j = mid + 1; j <= end; j++) {
+                long temp = sum[j] - sum[i] + nums[i];
+                if (temp >= lower && temp <= upper) {
+                    total++;
+                }
+            }
+        }
+        return total + helper(nums, sum, lower, upper, start, mid) + helper(nums, sum, lower, upper, mid + 1, end);
+    }
+}

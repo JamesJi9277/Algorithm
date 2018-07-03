@@ -104,3 +104,21 @@ class Solution {
         return max;
     }
 }
+
+class Solution {
+    public int rob(TreeNode root) {
+        int[] res = robSub(root);
+        return Math.max(res[0], res[1]); // 0 represent max when root is not robbed, 1 stands for max when root is robbed
+    }
+    private int[] robSub(TreeNode root) {
+        if (root == null) {
+            return new int[2];
+        }
+        int[] robLeft = robSub(root.left);
+        int[] robRight = robSub(root.right);
+        int[] res = new int[2];
+        res[0] = root.val + robLeft[1] + robRight[1]; // if rob root
+        res[1] = Math.max(robLeft[0], robLeft[1]) + Math.max(robRight[0], robRight[1]);
+        return res;
+    }
+}
