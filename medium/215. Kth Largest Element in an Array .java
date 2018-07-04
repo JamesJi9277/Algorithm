@@ -25,6 +25,15 @@ class Solution {
             pq.poll();
         }
         return pq.poll();
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i : nums) {
+            pq.offer(i);
+        }
+        while (--k > 0) {
+            pq.poll();
+        }
+        return pq.peek();
     }
 }
 
