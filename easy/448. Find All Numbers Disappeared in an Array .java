@@ -5,14 +5,16 @@
 // 以后看见顺序性很强的数组题可以往swap上面靠
 class Solution {
     public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> res = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
+            // while表示两边都不相等，所以就需要来置换直到至少有一边满足条件
             while (nums[i] != i + 1 && nums[nums[i] - 1] != nums[i]) {
-                int tmp = nums[i];
-                nums[i] = nums[tmp - 1];
-                nums[tmp - 1] = tmp;
+                // 这里用temp很重要，因为如果用nums[i]来表示的话接下来这个值都会发生变化
+                int temp = nums[i];
+                nums[i] = nums[temp - 1];
+                nums[temp - 1] = temp;
             }
         }
-        List<Integer> res = new ArrayList<Integer>();
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] != i + 1) {
                 res.add(i + 1);

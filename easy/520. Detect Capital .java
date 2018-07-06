@@ -26,3 +26,21 @@ class Solution {
         return (c >= 'a' && c <= 'z');
     }
 }
+
+
+class Solution {
+    public boolean detectCapitalUse(String word) {
+        if (word.toUpperCase().equals(word)){
+            return true;
+        }
+        if (word.toLowerCase().equals(word)){
+            return true;
+        }
+        String string = word.substring(1, word.length());
+        if (Character.isUpperCase(word.charAt(0)) && string.toLowerCase().equals(string)) {
+            return true;
+        }
+        
+        return false;
+    }
+}

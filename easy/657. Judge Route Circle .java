@@ -1,28 +1,19 @@
 class Solution {
     public boolean judgeCircle(String moves) {
-        if (moves == null || moves.length() == 0) {
-            return true;
-        }
-        int[] count = helper(moves);
-        if (count[0] == count[1] && count[2] == count[3]) {
-            return true;
-        }
-        return false;
-    }
-    private int[] helper(String s) {
-        char[] array = s.toCharArray();
-        int[] result = new int[4];
-        for (char c : array) {
-            if (c == 'R') {
-                result[0]++;
+        int up = 0;
+        int left = 0;
+        for (int i = 0; i < moves.length(); i++) {
+            char c = moves.charAt(i);
+            if (c == 'U') {
+                up++;
+            } else if (c == 'D') {
+                up--;
             } else if (c == 'L') {
-                result[1]++;
-            } else if (c == 'U') {
-                result[2]++;
+                left++;
             } else {
-                result[3]++;
+                left--;
             }
         }
-        return result;
+        return up == 0 && left == 0;
     }
 }
