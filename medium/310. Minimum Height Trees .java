@@ -1,52 +1,44 @@
 class Solution {
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        List<Integer> res = new ArrayList<Integer>();
-        if (n == 1) {
-            res.add(0);
-            return res;
+        if (n == 1) return Collections.singletonList(0);
+        //首先这一题是无向图，所以用degree来表示
+        int[] degree = new int[n];
+        for (int[] edge : edges) {
+            degree[edge[0]]++;
+            degree[edge[1]]++;
         }
-        HashSet<Integer>[] neighbors = new HashSet[n];
-        int[] degrees = new int[n];
-        HashSet<Integer> isVisited = new HashSet<Integer>();
-        List<Integer> leafs = new ArrayList<Integer>();
-        for (int i = 0; i < edges.length; i++) {
-            int a = edges[i][0];
-            int b = edges[i][1];
-            if (neighbors[a] == null) {
-                neighbors[a] = new HashSet<Integer>();
-            } 
-                neighbors[a].add(b);
-            
-            if (neighbors[b] == null) {
-                neighbors[b] = new HashSet<Integer>();
-            } 
-                neighbors[b].add(a);
-            
-            degrees[a]++;
-            degrees[b]++;
-        }
-        for (int i = 0; i < degrees.length; i++) {
-            if (degrees[i] == 1) {
-                leafs.add(i);
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < degree.length; i++) {
+            if (degree[i] == 1) {
+                queue.offer(i);
             }
         }
-        while (isVisited.size() < n - 2) {
-            List<Integer> nextLevel = new ArrayList<Integer>();
-            for (int i = 0; i < leafs.size(); i++) {
-                int leaf = leafs.get(i);
-                isVisited.add(leaf);
-                HashSet<Integer> set = neighbors[leaf];
-                for (int j : set) {
-                    if (!isVisited.contains(j)) {
-                        degrees[j]--;
-                        if (degrees[j] == 1) {
-                            nextLevel.add(j);
+        while (n > 2) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int temp = queue.poll();
+                for (int[] edge : edges) {
+                    if (edge[0] == temp) {
+                        degree[edge[1]]--;
+                        if (degree[edge[1]] == 1) {
+                            queue.offer(edge[1]);
                         }
+                        n--; 
+                        //相当于是抹去这条边，不会在接下来再进行对比了
+                        edge[0]=-1;
+                        edge[1]=-1;
+                    } else if (edge[1] == temp) {
+                        degree[edge[0]]--;
+                        if (degree[edge[0]] == 1) {
+                            queue.offer(edge[0]);
+                        }
+                        n--; 
+                        edge[0]=-1;
+                        edge[1]=-1;
                     }
                 }
             }
-            leafs = nextLevel;
         }
-        return leafs;
+        return new ArrayList<Integer>(queue);
     }
 }

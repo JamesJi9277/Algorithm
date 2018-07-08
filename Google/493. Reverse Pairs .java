@@ -31,6 +31,21 @@ class Solution {
             bit[i] += value;
         }
     }
+    
+    private int binarySearch(int[] nums, long val) {
+        int i = 0;
+        int j = nums.length - 1;
+        while (i <= j) {
+            int mid = i + (j - i) / 2;
+            if (nums[mid] >= val) {
+                j = mid - 1;
+            } else {
+                i = mid + 1;
+            }
+        }
+        // 返回bit内的index，要加一
+        return i;
+    }
     private int binarySearch1(int[] nums, long target) {
         int start = 0;
         int end = nums.length - 1;
@@ -49,20 +64,6 @@ class Solution {
         }
     }
     
-    private int binarySearch(int[] nums, long val) {
-        int i = 0;
-        int j = nums.length - 1;
-        while (i <= j) {
-            int mid = i + (j - i) / 2;
-            if (nums[mid] >= val) {
-                j = mid - 1;
-            } else {
-                i = mid + 1;
-            }
-        }
-        // 返回bit内的index，要加一
-        return i;
-    }
 }
 
 http://www.cnblogs.com/grandyang/p/6657956.html
