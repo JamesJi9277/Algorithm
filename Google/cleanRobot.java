@@ -1,97 +1,68 @@
-/*
-*Given 4 APIS
-clean() : clean the current location
-turnLeft(k): turn left k*90 degrees.
-turnRight(k): make right turn
-move(): return true if can, and vise versa
-*/
+/**
+ * // This is the robot's control interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Robot {
+ *     // Returns true if the cell in front is open and robot moves into the cell.
+ *     // Returns false if the cell in front is blocked and robot stays in the current cell.
+ *     public boolean move();
+ *
+ *     // Robot will stay in the same cell after calling turnLeft/turnRight.
+ *     // Each turn will be 90 degrees.
+ *     public void turnLeft();
+ *     public void turnRight();
+ *
+ *     // Clean the current cell.
+ *     public void clean();
+ * }
+ */
 
-class CleaningRobot {
-	private int[][] direction = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+https://leetcode.com/explore/interview/card/google/61/trees-and-graphs/1340/
 
-	public void run() {
-		Set<Integer> visited = new HashSet<>();
-		dfs(0, 0, visited);
-	}
+class Solution {
+    public void cleanRoom(Robot robot) {
+        Set<String> visited = new HashSet<>();
+        dfs(robot, visited, 0, 0, 0);
+    }
 
-	private void dfs(int row, int col, HashSet<Integer> visited) {
-		clean();
-
-		for (int i = 0; i < 4; i++) {
-			int x = row + direction[i][0];
-			int y = col + direction[i][1];
-
-			if (!visited.contains(hash(x, y)) && move()) {
-				visited.add(hash(x, y));
-				dfs(x, y, visited);
-			}
-			turnLeft(2);
-		}
-		goBack();
-	}
-
-	private void hash(int x, int y) {
-		return 12 * x + 34 * y;
-	}
-
-	private void goBack() {
-		turnLeft(2);
-		move();
-		turnLeft();
-	}
-}
-
-
-public class CleaningRobot {
-	public void run() {
-		Set<Integer> visited = new HashSet<Integer>();
-		dfs(0, 0, visited);
-	}
-	private void dfs(int row, int col, Set<Integer> visited) {
-		for(int i = 0; i < 4; i++) {
-			int x = row + direction[i][0];
-			int y = col + direction[i][1];
-			if (move() && !visited.contains(hash(x, y))) {
-				visited.add(hash(x, y));
-				clean();
-				dfs(x, y, visited);
-				goBack();
-			}
-			turnLeft();
-		}
-		goBack();
-	}
-	private void goBack() {
-		turnLeft(2);
-		move();
-		tuenLeft(2);
-	}
-}
-
-
-public class CleaningRobot {
-	int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-	public void clean(int[][] room, int[] start) {
-		if (room == null || room.length == 0 || room[0].length == 0) {
-			return;
-		}
-		Set<Integer> visited = new HashSet<>();
-		dfs(room, start[0], start[1], visited);
-	}
-	private void dfs(int[][] room, int row, int col, Set<Integer> visited) {
-		if (row < 0 || row >= room.length || col < 0 || col >= room[0].length || visited.contains(hash(row, col))) {
-			return;
-		}
-		for (int[] dir : directions) {
-			int x = row + dir[0];
-			int y = col + dir[1];
-			if (!visited.contains(hash(x, y))) {
-				move(row, col, x, y);
-				visited.add(hash(x, y));
-				clean();
-				dfs(room, x, y, visited);
-				move(x, y, row, col);//move back
-			}
-		}
-	}
+    // 0 up 90 right, 180 down, 270 left
+    private void dfs(Robot robot, Set<String> visited, int row, int col, int dir) {
+        String temp = row + "->" + col;
+        if (!visited.add(temp)) {
+            return;
+        }
+        robot.clean();
+        for (int i = 0; i < 4; i++) {
+            if (robot.move()) {
+                int x = row;
+                int y = col;
+                switch (dir) {
+                    case 0 :
+                        x = row - 1;
+                        break;
+                    case 90:
+                        y = col + 1;
+                        break;
+                    case 180:
+                        x = row + 1;
+                        break;
+                    case 270:
+                        y = col - 1;
+                        break;
+                }
+                dfs(robot, visited, x, y, dir);
+                goBack(robot);
+            }
+            robot.turnRight();
+            dir += 90;
+            dir %= 360;
+        }
+    }
+    
+    private void goBack(Robot robot) {
+        robot.turnLeft();
+        robot.turnLeft();
+        robot.move();
+        robot.turnLeft();
+        robot.turnLeft();
+    }
 }

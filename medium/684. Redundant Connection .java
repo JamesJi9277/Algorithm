@@ -1,24 +1,26 @@
 class Solution {
     public int[] findRedundantConnection(int[][] edges) {
-        int[] parent = new int[2000];
-        for (int i = 0; i < parent.length; i++) {
-            parent[i] = i;
+        if (edges == null || edges.length == 0 || edges[0].length == 0) {
+            return null;
+        }
+        int[] roots = new int[2000];
+        for (int i = 0; i < roots.length; i++) {
+            roots[i] = i;
         }
         for (int[] edge : edges) {
-            int f = edge[0];
-            int p = edge[1];
-            if (find(parent, f) == find(parent, p)) {
+            int root1 = findRoot(roots, edge[0]);
+            int root2 = findRoot(roots, edge[1]);
+            if (root1 == root2) {
                 return edge;
-            } else {
-                parent[find(parent, f)] = find(parent, p);
             }
+            roots[root1] = root2;
         }
-        return new int[2];
+        return null;
     }
-    private int find(int[] parent, int i) {
-        if (i != parent[i]) {
-            parent[i] = find(parent, parent[i]);
+    private int findRoot(int[] roots, int index) {
+        while (roots[index] != index) {
+            index = roots[index];
         }
-        return parent[i];
+        return index;
     }
 }
