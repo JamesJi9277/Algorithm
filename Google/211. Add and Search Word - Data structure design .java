@@ -1,13 +1,30 @@
 class WordDictionary {
 
-    TrieNode root;
+    class TrieNode {
+        char c;
+        TrieNode[] children;
+        boolean isWord;
+        public TrieNode() {
+            this.isWord = false;
+            this.children = new TrieNode[26];
+        }
+        public TrieNode(char c) {
+            this.c = c;
+            this.isWord = false;
+            this.children = new TrieNode[26];
+        }
+    }
     /** Initialize your data structure here. */
+    TrieNode root;
     public WordDictionary() {
         root = new TrieNode();
     }
     
     /** Adds a word into the data structure. */
     public void addWord(String word) {
+        if (word == null || word.length() == 0) {
+            return;
+        }
         TrieNode temp = root;
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -21,43 +38,32 @@ class WordDictionary {
     
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
     public boolean search(String word) {
-        return helper(root, word);
+        if (word == null || word.length() == 0) {
+            return false;
+        }
+        TrieNode temp = root;
+        return helper(temp, word);
     }
-    private boolean helper(TrieNode root, String word) {
+    private boolean helper(TrieNode root, String s) {
         if (root == null) {
             return false;
         }
-        if (word.length() == 0) {
+        if (s.length() == 0) {
             return root.isWord;
         }
-        String s = word.substring(1);
-        char c = word.charAt(0);
         boolean res = false;
+        char c = s.charAt(0);
+        s = s.substring(1);
         if (c == '.') {
-            for (int i = 0; i < 26; i++) {
-                if (root.children[i] != null) {
-                    res |= helper(root.children[i], s);
+            for (TrieNode node : root.children) {
+                if (node != null) {
+                    res |= helper(node, s);
                 }
             }
         } else {
             res |= helper(root.children[c - 'a'], s);
         }
         return res;
-    }
-    
-    class TrieNode {
-        char c;
-        TrieNode[] children;
-        boolean isWord;
-        public TrieNode () {
-            this.children = new TrieNode[26];
-            this.isWord = false;
-        }
-        public TrieNode (char c) {
-            this.c = c;
-            this.children = new TrieNode[26];
-            this.isWord = false;
-        }
     }
 }
 

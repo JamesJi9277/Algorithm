@@ -1,4 +1,4 @@
-/**
+ /**
  * Definition for an interval.
  * public class Interval {
  *     int start;
@@ -15,7 +15,7 @@ class Solution {
         Arrays.sort(intervals, (a, b) -> (a.start - b.start));
         PriorityQueue<Interval> pq = new PriorityQueue<Interval>(intervals.length, (a, b) -> (a.end - b.end));
         pq.offer(intervals[0]);
-        for (int i = 0; i < intervals.length; i++) {
+        for (int i = 1; i < intervals.length; i++) {
             Interval temp = pq.poll();
             if (temp.end <= intervals[i].start) {
                 temp.end = intervals[i].end;

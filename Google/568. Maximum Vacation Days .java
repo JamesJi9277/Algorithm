@@ -31,3 +31,28 @@ class Solution {
 }
 
 
+int n = flights.length;
+        int k = days[0].length;
+        int res = 0;
+        int[][] dp = new int[k][n];//第K周在第N个城市的最大假期
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < n; j++) {
+                int max = Integer.MIN_VALUE;
+                if (i == 0) {
+                    if (j == 0 || flights[0][j] == 1) {
+                        max = days[j][0];
+                    }
+                } else {
+                    for (int m = 0; m < n; m++) {
+                        if (m == j || flights[m][j] == 1) {
+                            max = Math.max(max, dp[i - 1][m] + days[j][i]);//maximum days you could take vacation in the city i in the week j.
+                        }
+                    }
+                }
+                dp[i][j] = max;
+            }
+        }
+        for (int i : dp[k - 1]) {
+            res = Math.max(res, i);
+        }
+        return res;
