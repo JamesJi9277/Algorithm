@@ -13,3 +13,19 @@ class Solution {
         return dp[N];
     }
 }
+
+class Solution {
+    int mod = (int)Math.pow(10, 9) + 7;
+    public int numTilings(int N) {
+        int[] res = new int[N + 5];
+        res[0] = 0;
+        res[1] = 1;
+        res[2] = 2;
+        res[3] = 5;
+        for (int i = 4; i < res.length; i++) {
+            res[i] = 2 * res[i - 1] % mod + res[i - 3] % mod;
+            res[i] %= mod;
+        }
+        return res[N];
+    }
+}

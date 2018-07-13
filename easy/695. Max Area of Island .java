@@ -13,14 +13,11 @@ class Solution {
         }
         return max;
     }
-    private int helper(int[][] grid, int i, int j) {
-        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0) {
+    private int helper(int[][] grid, int x, int y) {
+        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == 0) {
             return 0;
         }
-        if (grid[i][j] == 1) {
-            grid[i][j] = 0;
-            return 1 + helper(grid, i + 1, j) + helper(grid, i - 1, j) + helper(grid, i, j + 1) + helper(grid, i, j - 1);
-        }
-        return 0;
+        grid[x][y] = 0;
+        return 1 + helper(grid, x + 1, y) + helper(grid, x - 1, y) + helper(grid, x, y + 1) + helper(grid, x, y - 1);
     }
 }

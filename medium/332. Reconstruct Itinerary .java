@@ -1,33 +1,19 @@
 class Solution {
     public List<String> findItinerary(String[][] tickets) {
-        List<String> res = new ArrayList<String>();
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
-        if (tickets == null || tickets.length == 0 || tickets[0].length == 0) {
-            return res;
+        List<String> res = new ArrayList<>();
+        HashMap<String, PriorityQueue<String>> map = new HashMap<>();
+        for (String[] t : tickets) {
+            map.putIfAbsent(t[0], new PriorityQueue<>());
+            map.get(t[0]).offer(t[1]);
         }
-        for (String[] ticket : tickets) {
-            if (!map.containsKey(ticket[0])) {
-                map.put(ticket[0], new ArrayList<String>());
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+        while (!stack.isEmpty()) {
+            while (map.containsKey(stack.peek()) && !map.get(stack.peek()).isEmpty()) {
+                stack.push(map.get(stack.peek()).poll());
             }
-            map.get(ticket[0]).add(ticket[1]);
+            res.add(0, stack.pop());
         }
-        for (String key : map.keySet()) {
-            Collections.sort(map.get(key));
-        }
-        helper(map, res, "JFK");
-        res.add("JFK");
-        Collections.reverse(res);
         return res;
-    }
-    private void helper(Map<String, List<String>> map, List<String> res, String s) {
-        if (!map.containsKey(s) || map.get(s).size() == 0) {
-            return;
-        }
-        while (map.get(s).size() != 0) {
-            String s1 = map.get(s).get(0);
-            map.get(s).remove(0);
-            helper(map, res, s1);
-            res.add(s1);
-        }
     }
 }
