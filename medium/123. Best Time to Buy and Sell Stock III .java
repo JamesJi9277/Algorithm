@@ -7,24 +7,24 @@ class Solution {
         int p2 = twoTimes(prices);
         return Math.max(p1, p2);
     }
+    private int twoTimes(int[] prices) {
+        int res = 0;
+        for (int i = 0; i < prices.length; i++) {
+            res = Math.max(res, oneTime(prices, 0, i) + oneTime(prices, i + 1, prices.length - 1));
+        }
+        return res;
+    }
     private int oneTime(int[] prices, int start, int end) {
         if (start >= end) {
             return 0;
         }
-        int max = 0;
         int min = Integer.MAX_VALUE;
+        int res = 0;
         for (int i = start; i <= end; i++) {
             min = Math.min(min, prices[i]);
-            max = Math.max(max, prices[i] - min);
+            res = Math.max(res, prices[i] - min);
         }
-        return max;
-    }
-    private int twoTimes(int[] prices) {
-        int max = 0;
-        for (int i = 0; i < prices.length; i++) {
-            max = Math.max(max, oneTime(prices, 0, i) + oneTime(prices, i, prices.length - 1));
-        }
-        return max;
+        return res;
     }
 }
 

@@ -31,3 +31,15 @@ class Solution {
         return (int)tik0;
     }
 }
+
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        int sell = 0, buy = -prices[0];
+        for (int price : prices) {
+            int sellOld = sell;
+            sell = Math.max(sell, buy + price - fee);
+            buy = Math.max(buy, sellOld - price);
+        }
+        return sell;
+    }
+}
