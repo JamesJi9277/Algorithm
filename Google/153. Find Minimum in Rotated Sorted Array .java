@@ -1,5 +1,5 @@
 class Solution {
-    public int findPeakElement(int[] nums) {
+    public int findMin(int[] nums) {
         if (nums == null || nums.length == 0) {
             return -1;
         }
@@ -7,18 +7,16 @@ class Solution {
         int end = nums.length - 1;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (nums[mid] > nums[mid + 1] && nums[mid] > nums[mid - 1]) {
-                return mid;
-            } else if (nums[mid - 1] > nums[mid]) {
-                end = mid;
-            } else {
+            if (nums[mid] > nums[end]) {
                 start = mid;
+            } else {
+                end = mid;
             }
         }
         if (nums[start] > nums[end]) {
-            return start;
+            return nums[end];
         } else {
-            return end;
+            return nums[start];
         }
     }
 }

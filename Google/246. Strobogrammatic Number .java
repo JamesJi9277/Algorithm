@@ -10,14 +10,12 @@ class Solution {
         int left = 0;
         int right = num.length() - 1;
         while (left <= right) {
-            if (!map.containsKey(num.charAt(left))) {
+            if (!map.containsKey(num.charAt(left)) || map.get(num.charAt(left)) != num.charAt(right)) {
                 return false;
+            } else {
+                left++;
+                right--;
             }
-            if (map.get(num.charAt(left)) != num.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
         }
         return true;
     }

@@ -106,3 +106,56 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> res = new ArrayList<>();
+        if (buildings == null || buildings.length == 0 || buildings[0].length == 0) {
+            return res;
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        Point[] points = new Point[buildings.length * 2];
+        int index = 0;
+        for (int[] b : buildings) {
+            points[index++] = new Point(b[0], b[2], true);
+            points[index++] = new Point(b[1], b[2], false);
+        }
+        Arrays.sort(points);
+        pq.offer(0);
+        int max = 0;
+        for (Point p : points) {
+            if (p.isStart) {
+                pq.offer(p.height);
+            } else {
+                pq.remove(p.height);
+            }
+            if (max != pq.peek()) {
+                max = pq.peek();
+                res.add(new int[]{p.x, max});
+            }
+        }
+        return res;
+    }
+    class Point implements Comparable<Point> {
+        int x;
+        int height;
+        boolean isStart;
+        public Point() {
+            
+        }
+        public Point(int x, int height, boolean isStart) {
+            this.x = x;
+            this.height = height;
+            this.isStart = isStart;
+        }
+        @Override
+        public int compareTo(Point that) {
+            if (this.x != that.x) {
+                return this.x - that.x;
+            } else {
+                return (this.isStart ? -this.height : this.height) - (that.isStart ? -that.height : that.height);
+            }
+        }
+    }
+}

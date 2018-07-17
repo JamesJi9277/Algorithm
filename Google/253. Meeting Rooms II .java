@@ -1,4 +1,4 @@
- /**
+/**
  * Definition for an interval.
  * public class Interval {
  *     int start;
@@ -12,45 +12,21 @@ class Solution {
         if (intervals == null || intervals.length == 0) {
             return 0;
         }
-        Arrays.sort(intervals, (a, b) -> (a.start - b.start));
-        PriorityQueue<Interval> pq = new PriorityQueue<Interval>(intervals.length, (a, b) -> (a.end - b.end));
-        pq.offer(intervals[0]);
-        for (int i = 1; i < intervals.length; i++) {
-            Interval temp = pq.poll();
-            if (temp.end <= intervals[i].start) {
-                temp.end = intervals[i].end;
+        Arrays.sort(intervals, (a, b) ->(a.start - b.start));
+        PriorityQueue<Interval> pq = new PriorityQueue<Interval>((a, b) -> a.end - b.end);
+        for (Interval interval : intervals) {
+            if (pq.isEmpty()) {
+                pq.offer(interval);
             } else {
-                pq.offer(intervals[i]);
+                Interval i = pq.poll();
+                if (i.end <= interval.start) {
+                    i.end = interval.end;
+                } else {
+                    pq.offer(interval);
+                }
+                pq.offer(i);
             }
-            pq.offer(temp);
         }
-        
         return pq.size();
-    }
-}
-
-class Solution {
-    public int minMeetingRooms(Interval[] intervals) {
-        if (intervals == null || intervals.length == 0) {
-            return 0;
-        }
-        int[] start = new int[intervals.length];
-        int[] end = new int[intervals.length];
-        for (int i = 0; i < intervals.length; i++) {
-            start[i] = intervals[i].start;
-            end[i] = intervals[i].end;
-        }
-        Arrays.sort(start);
-        Arrays.sort(end);
-        int endIter = 0;
-        int room = 0;
-        for (int i = 0; i < intervals.length; i++) {
-            if (start[i] < end[endIter]) {
-                room++;
-            } else {
-                endIter++;
-            }
-        }
-        return room;
     }
 }

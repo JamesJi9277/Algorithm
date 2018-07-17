@@ -70,3 +70,46 @@ class Solution {
         }
     }
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftMostDepth = getLeft(root);
+        int rightMostDepth = getRight(root);
+        if (leftMostDepth == rightMostDepth) {
+            return (1 << leftMostDepth) - 1;
+        } else {
+            return countNodes(root.left) + countNodes(root.right) + 1;
+        }
+    }
+    private int getLeft(TreeNode root) {
+        int count = 0;
+        TreeNode temp = root;
+        while (temp != null) {
+            count++;
+            temp = temp.left;
+        }
+        return count;
+    }
+    private int getRight(TreeNode root) {
+        int count = 0;
+        TreeNode temp = root;
+        while (temp != null) {
+            count++;
+            temp = temp.right;
+        }
+        return count;
+    }
+}
