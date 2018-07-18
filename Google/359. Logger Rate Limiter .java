@@ -1,6 +1,6 @@
 class Logger {
 
-    Map<String, List<Integer>> map;
+    Map<String, Integer> map;
     /** Initialize your data structure here. */
     public Logger() {
         map = new HashMap<>();
@@ -11,17 +11,14 @@ class Logger {
         The timestamp is in seconds granularity. */
     public boolean shouldPrintMessage(int timestamp, String message) {
         if (!map.containsKey(message)) {
-            map.put(message, new ArrayList<Integer>());
-            map.get(message).add(timestamp);
+            map.put(message, timestamp);
             return true;
         } else {
-            List<Integer> list = map.get(message);
-            int recent = list.get(list.size() - 1);
-            if (timestamp - recent < 10) {
-                return false;
-            } else {
-                map.get(message).add(timestamp);
+            if (map.get(message) + 10 <= timestamp) {
+                map.put(message, timestamp);
                 return true;
+            } else {
+                return false;
             }
         }
     }
