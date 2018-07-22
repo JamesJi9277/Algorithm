@@ -37,4 +37,33 @@ class Solution {
     }
 }
 
-
+class Solution {
+    public String minWindow(String s, String t) {
+        if (s == null || t == null) {
+            return "";
+        }
+        int sIndex = 0;
+        int tIndex = 0;
+        int start = -1;
+        int minLen = Integer.MAX_VALUE;
+        while (sIndex < s.length()) {
+            if (s.charAt(sIndex) == t.charAt(tIndex)) {
+                if (++tIndex == t.length()) {
+                    // 是最后一个字母，开始向前搜索
+                    int end = sIndex + 1;
+                    while(--tIndex >= 0) {
+                        while(s.charAt(sIndex--) != t.charAt(tIndex));
+                    }
+                    tIndex++;
+                    sIndex++;
+                    if (end - sIndex < minLen) {
+                        minLen = end - sIndex;
+                        start = sIndex;
+                    }
+                }
+            }
+            sIndex++;
+        }
+        return start == -1 ? "" : s.substring(start, start + minLen);
+    }
+}
