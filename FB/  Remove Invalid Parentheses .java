@@ -31,7 +31,7 @@ class Solution {
             i--;
             for (int j = lastJ; j <= i; j++) {
                 // find first ')'
-                if (s.charAt(j) == check[1] && (j == lastJ || s.charAt(j - 1) != check[0])) {
+                if (s.charAt(j) == check[1] && (j == lastJ || s.charAt(j - 1) != check[1])) {
                     String temp = s.substring(0, j) + s.substring(j + 1, s.length());
                     helper(res, temp, i, j, check);
                 }
