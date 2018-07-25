@@ -1,20 +1,19 @@
-public class Solution {
+class Solution {
     public String countAndSay(int n) {
-        if(n < 1) {
+        if (n == 0) {
             return "";
         }
         String res = "1";
-        while(--n > 0) {
-            char[] nums = res.toCharArray();
+        while (--n > 0) {
             StringBuffer sb = new StringBuffer();
             int count = 1;
-            for(int i = 0; i < nums.length; i++) {
-                if(i != nums.length - 1 && nums[i] == nums[i + 1]) {
+            for (int i = 0; i < res.length(); i++) {
+                while (i < res.length() - 1 && res.charAt(i) == res.charAt(i + 1)) {
                     count++;
-                    continue;
+                    i++;
                 }
                 sb.append(count);
-                sb.append(nums[i]);
+                sb.append(res.charAt(i));
                 count = 1;
             }
             res = sb.toString();
