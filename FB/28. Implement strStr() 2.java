@@ -1,5 +1,3 @@
-// for each possible start index, do a search 
-// O(mn)
 class Solution {
     public int strStr(String s, String t) {
         if (s == null || t == null || t.length() > s.length()) {
