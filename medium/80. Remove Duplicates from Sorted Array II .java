@@ -5,12 +5,13 @@
 
 class Solution {
     public int removeDuplicates(int[] nums) {
-        int length = 0;
-        for (int n : nums) {
-            if (length < 2 || n > nums[length - 2]) {
-                nums[length++] = n;
+        if (nums == null || nums.length < 3) return nums.length;
+        int end = 2;
+        for (int start = 2; start < nums.length; start++){
+            if (nums[start] != nums[end - 2]){
+                nums[end++] = nums[start];
             }
         }
-        return length;
+        return end;
     }
 }
