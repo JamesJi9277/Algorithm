@@ -18,9 +18,10 @@ class Solution {
         if (root == null) {
             return true;
         }
-        if (!((long)root.val < max && (long)root.val > min)) {
+        long temp = (long)root.val;
+        if (!(temp > min && temp < max)) {
             return false;
         }
-        return helper(root.left, min, (long)root.val) && helper(root.right, (long)root.val, max);
+        return helper(root.left, min, temp) && helper(root.right, temp, max);
     }
 }
