@@ -1,19 +1,14 @@
 class Solution {
     public String convertToTitle(int n) {
-        return n == 0 ? "" : convertToTitle(--n / 26) + (char)('A' + (n % 26));
-    }
-}
-
-public class Solution {
-    public String convertToTitle(int n) {
-        StringBuilder result = new StringBuilder();
-
-        while(n>0){
+        StringBuffer sb = new StringBuffer();
+        if (n < 1) {
+            return sb.toString();
+        }
+        while (n != 0) {
             n--;
-            result.insert(0, (char)('A' + n % 26));
+            sb.append((char)('A' + n % 26));
             n /= 26;
         }
-
-        return result.toString();
+        return sb.reverse().toString();
     }
 }
