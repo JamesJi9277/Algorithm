@@ -3,25 +3,28 @@ class Solution {
         if (ages == null || ages.length == 0) {
             return 0;
         }
-        int count = 0;
+        // 根据年龄来穷举，然后再map里面根据排列组合找到count的总数
         int[] map = new int[121];
         for (int age : ages) {
             map[age]++;
         }
-        for (int A = 1; A <= 120; A++) {
-            for (int B = 1; B <= 120; B++) {
-                if (B <= 0.5 * A + 7) {
+        int[] A = new int[121];
+        int[] B = new int[121];
+        int count = 0;
+        for (int i = 1; i < 121; i++) {
+            for (int j = 1; j < 121; j++) {
+                if (j > i) {
                     continue;
                 }
-                if (B > A) {
+                if (j <= 0.5 * i + 7) {
                     continue;
                 }
-                if (B > 100 && A < 100) {
+                if (j > 100 && i < 100) {
                     continue;
                 }
-                count += map[A] * map[B];
-                if (A == B) {
-                    count -= map[A];
+                count += map[i] * map[j];
+                if (i == j) {
+                    count -= map[i];
                 }
             }
         }
