@@ -76,3 +76,43 @@ class Solution {
         return res;
     }
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        TreeNode temp = null;
+        while (root != null) {
+            if (root.left != null) {
+                temp = root.left;
+                while (temp.right != null && temp.right != root) {
+                    temp = temp.right;
+                }
+                if (temp.right != null) {
+                    res.add(root.val);
+                    temp.right = null;
+                    root = root.right;
+                } else {
+                    temp.right = root;
+                    root = root.left;
+                }
+            } else {
+                res.add(root.val);
+                root = root.right;
+            }
+        }
+        return res;
+    }
+}
