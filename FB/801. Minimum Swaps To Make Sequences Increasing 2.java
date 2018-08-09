@@ -18,3 +18,5 @@ class Solution {
         return Math.min(dp[a.length - 1][0], dp[a.length - 1][1]);
     }
 }
+https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/discuss/119995/Java-neat-and-easy-to-understand-DP-O(n)-solution!
+https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/discuss/119879/C++JavaPython-Easy-Understood-DP-Solution

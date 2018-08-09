@@ -1,3 +1,6 @@
+// this is a gppd problem
+// first using dp thinking
+// then use weight think
 class Solution {
     public int[] productExceptSelf(int[] nums) {
         if (nums == null || nums.length == 0) {

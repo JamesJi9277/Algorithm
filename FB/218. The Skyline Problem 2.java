@@ -13,6 +13,7 @@ class Solution {
             points[index++] = p1;
             points[index++] = p2;
         }
+        // need to sort first
         Arrays.sort(points);
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         pq.offer(0);
@@ -31,6 +32,7 @@ class Solution {
         }
         return res;
     }
+    // implements Comparable<Point>
     class Point implements Comparable<Point> {
         int x;
         int height;
@@ -44,6 +46,7 @@ class Solution {
             this.isStart = isStart;
         }
         
+        // need to first compare x, then height
         @Override
         public int compareTo(Point that) {
             if (this.x != that.x) {
