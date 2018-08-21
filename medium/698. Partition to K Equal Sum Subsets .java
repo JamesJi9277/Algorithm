@@ -32,3 +32,39 @@ class Solution {
         return false;
     }
 }
+
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        int sum = 0;
+        for (int i : nums) {
+            sum += i;
+        }
+        if (k == 0 || sum % k != 0) {
+            return false;
+        }
+        int[] visited = new int[nums.length];
+        return helper(nums, visited, 0, k, 0, sum / k);
+    }
+    private boolean helper(int[] nums, int[] visited, int start, int k, int curSum, int target) {
+        if (k == 0) {
+            return true;
+        }
+        if (curSum == target) {
+            return helper(nums, visited, 0, k - 1, 0, target);
+        }
+        for (int i = start; i < nums.length; i++) {
+            if (visited[i] == 1) {
+                continue;
+            }
+            visited[i] = 1;
+            if (helper(nums, visited, i + 1, k, curSum + nums[i], target)) {
+                return true;
+            }
+            visited[i] = 0;
+        }
+        return false;
+    }
+}
