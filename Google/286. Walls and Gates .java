@@ -1,6 +1,5 @@
 class Solution {
     public void wallsAndGates(int[][] rooms) {
-        // 这一题是要从0出发然后更新距离
         if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
             return;
         }
@@ -11,22 +10,18 @@ class Solution {
                 }
             }
         }
-        return;
     }
-    private void dfs(int[][] rooms, int x, int y, int steps) {
-        if (x < 0 || x >= rooms.length || y < 0 || y >= rooms[0].length || rooms[x][y] == -1) {
+    private void dfs(int[][] rooms, int row, int col, int dis) {
+        if (row < 0 || row >= rooms.length || col < 0 || col >= rooms[0].length || rooms[row][col] == -1 || dis > rooms[row][col]) {
             return;
         }
-        if (rooms[x][y] >= steps) {
-            rooms[x][y] = steps;
-            dfs(rooms, x + 1, y, steps + 1);
-            dfs(rooms, x - 1, y, steps + 1);
-            dfs(rooms, x, y + 1, steps + 1);
-            dfs(rooms, x, y - 1, steps + 1);
-        }
+        rooms[row][col] = dis;
+        dfs(rooms, row + 1, col, dis + 1);
+        dfs(rooms, row - 1, col, dis + 1);
+        dfs(rooms, row, col + 1, dis + 1);
+        dfs(rooms, row, col - 1, dis + 1);
     }
 }
-
 public class Solution {
     public void wallsAndGates(int[][] rooms) {
         if (rooms.length == 0 || rooms[0].length == 0) return;
