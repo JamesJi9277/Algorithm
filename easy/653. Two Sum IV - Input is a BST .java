@@ -45,24 +45,16 @@ class Solution {
         return result;
     }
 }
-
-
 class Solution {
+    Set<Integer> set = new HashSet<>();
     public boolean findTarget(TreeNode root, int k) {
         if (root == null) {
             return false;
         }
-        HashSet<Integer> set = new HashSet<Integer>();
-        return helper(root, set, k);
-    }
-    private boolean helper(TreeNode root, HashSet<Integer> set, int target) {
-        if (root == null) {
-            return false;
-        }
-        if (set.contains(target - root.val)) {
+        if (set.contains(k - root.val)) {
             return true;
         }
         set.add(root.val);
-        return helper(root.left, set, target) || helper(root.right, set, target);
+        return findTarget(root.left, k) || findTarget(root.right, k);
     }
 }

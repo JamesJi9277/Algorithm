@@ -1,40 +1,58 @@
 class RandomizedSet {
-    private Map<Integer, Integer> map;
-    private List<Integer> list;
-    private int index = 0;
+
+    List<Integer> list;
+    int index;
+    Map<Integer, Integer> map;
     /** Initialize your data structure here. */
     public RandomizedSet() {
-        map = new HashMap<Integer, Integer>();
         list = new ArrayList<>();
+        index = 0;
+        map = new HashMap<>();
     }
     
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
-        if(map.containsKey(val))
-            return false;
-        map.put(val, index);
-        list.add(val);   
-        index++;
-        return true;
+        boolean res = false;
+        if (map.containsKey(val)) {
+            return res;
+        }
+        res = true;
+        map.put(val, index++);
+        list.add(val);
+        return res;
     }
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
-        if(!map.containsKey(val))
+        if (!map.containsKey(val)) {
             return false;
-        int loc = map.get(val);
-        map.put(list.get(list.size()-1), loc);
-        list.set(loc, list.get(list.size()-1));
-        list.remove(list.size()-1);
-        map.remove(val);
-        index--;
+        }
+        if (list.get(list.size() - 1) == val) {
+            list.remove(list.size() - 1);
+            index--;
+            map.remove(val);
+        } else {
+            int lastEle = list.get(list.size() - 1);
+            int replaceIndex = map.get(val);
+            list.set(replaceIndex, lastEle);
+            map.remove(val);
+            map.put(lastEle, replaceIndex);
+            index--;
+        }
         return true;
     }
     
     /** Get a random element from the set. */
     public int getRandom() {
-        int size = list.size();
-        int count = new Random().nextInt(size);
-        return list.get(count);
+        Random random = new Random();
+        return list.get(random.nextInt(index));
     }
 }
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */

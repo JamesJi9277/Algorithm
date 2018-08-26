@@ -1,55 +1,45 @@
 class Solution {
     public List<String> findWords(char[][] board, String[] words) {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
         if (board == null || board.length == 0 || board[0].length == 0) {
             return res;
         }
         Trie trie = new Trie();
-        for (String word : words) {
-            trie.add(word);
+        for (String s : words) {
+            trie.add(s);
         }
-        boolean[][] isUsed = new boolean[board.length][board[0].length];
+        boolean[][] visited = new boolean[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                helper(board, i, j, "", isUsed, trie, res);
+                helper(board, i, j, "", visited, trie, res);
             }
         }
         return res;
     }
-    
-    private void helper(char[][] board, int i, int j, String temp, boolean[][] isUsed, Trie trie, List<String> res) {
-        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || isUsed[i][j]) {
+    private void helper(char[][] board, int row, int col, String temp, boolean[][] visited, Trie trie, List<String> res) {
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length || visited[row][col]) {
             return;
         }
-        temp += board[i][j];
-        if(!trie.startWith(temp)) {
+        temp += board[row][col];
+        if (!trie.startWith(temp)) {
             return;
         }
-        if (trie.contains(temp)) {
-            if (!res.contains(temp)) {
-                res.add(temp);
-            }
+        if (trie.contains(temp) && !res.contains(temp)) {
+            res.add(temp);
         }
-        isUsed[i][j] = true;
-        helper(board, i + 1, j, temp, isUsed, trie, res);
-        helper(board, i - 1, j, temp, isUsed, trie, res);
-        helper(board, i, j + 1, temp, isUsed, trie, res);
-        helper(board, i, j - 1, temp, isUsed, trie, res);
-        isUsed[i][j] = false;
+        visited[row][col] = true;
+        helper(board, row + 1, col, temp, visited, trie, res);
+        helper(board, row - 1, col, temp, visited, trie, res);
+        helper(board, row, col + 1, temp, visited, trie, res);
+        helper(board, row, col - 1, temp, visited, trie, res);
+        visited[row][col] = false;
     }
-    
     class TrieNode {
-        char c;
+        Map<Character, TrieNode> children;
         boolean isWord;
-        TrieNode[] children;
         public TrieNode() {
-            children = new TrieNode[26];
-            isWord = false;
-        }
-        public TrieNode(char c) {
-            this.c = c;
-            children = new TrieNode[26];
-            isWord = false;
+            this.children = new HashMap<>();
+            this.isWord = false;
         }
     }
     class Trie {
@@ -57,53 +47,35 @@ class Solution {
         public Trie() {
             root = new TrieNode();
         }
-        public Trie(TrieNode root) {
-            this.root = root;
-        }
         public void add(String s) {
             TrieNode temp = root;
-            if (s == null || s.length() == 0) {
-                return;
-            }
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (temp.children[c - 'a'] == null) {
-                    temp.children[c - 'a'] = new TrieNode(c);
+            for (char c : s.toCharArray()) {
+                if (!temp.children.containsKey(c)) {
+                    temp.children.put(c, new TrieNode());
                 }
-                temp = temp.children[c - 'a'];
+                temp = temp.children.get(c);
             }
             temp.isWord = true;
         }
-        
-        public boolean startWith(String s) {
-            if (s == null || s.length() == 0) {
-                return false;
-            }
-            TrieNode temp = root;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (temp.children[c - 'a'] == null) {
-                    return false;
-                } else {
-                    temp = temp.children[c - 'a'];
-                }
-            }
-            return true;
-        }
         public boolean contains(String s) {
-            if (s == null || s.length() == 0) {
-                return false;
-            }
             TrieNode temp = root;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (temp.children[c - 'a'] == null) {
+            for (char c : s.toCharArray()) {
+                if (!temp.children.containsKey(c)) {
                     return false;
-                } else {
-                    temp = temp.children[c - 'a'];
                 }
+                temp = temp.children.get(c);
             }
             return temp.isWord;
+        }
+        public boolean startWith(String s) {
+            TrieNode temp = root;
+            for (char c : s.toCharArray()) {
+                if (!temp.children.containsKey(c)) {
+                    return false;
+                }
+                temp = temp.children.get(c);
+            }
+            return true;
         }
     }
 }

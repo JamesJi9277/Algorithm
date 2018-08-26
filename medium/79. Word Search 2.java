@@ -31,3 +31,33 @@ class Solution {
         return res;
     }
 }
+
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (helper(board, word, i, j, visited, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean helper(char[][] board, String word, int row, int col, boolean[][] visited, int index) {
+        if (index == word.length()) {
+            return true;
+        }
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length || visited[row][col] || 
+           word.charAt(index) != board[row][col]) {
+            return false;
+        }
+        visited[row][col] = true;
+        boolean res = helper(board, word, row + 1, col, visited, index + 1) || helper(board, word, row - 1, col, visited, index + 1) || helper(board, word, row, col + 1, visited, index + 1) || helper(board, word, row, col - 1, visited, index + 1);
+        visited[row][col] = false;
+        return res;
+    }
+}
