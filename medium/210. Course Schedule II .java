@@ -1,43 +1,43 @@
 class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        if (numCourses < 0 || prerequisites == null) {
+    public int[] findOrder(int numCourses, int[][] pres) {
+        if (pres == null) {
             return null;
         }
-        HashMap<Integer, List<Integer>> map = initialGraph(numCourses);
-        int[] indegree = new int[numCourses];
-        Queue<Integer> queue = new LinkedList<Integer>();
-        List<Integer> list = new ArrayList<Integer>();
-        for (int[] edge : prerequisites) {
-            map.get(edge[1]).add(edge[0]);
-            indegree[edge[0]]++;
+        List<Integer> res = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        Map<Integer, Integer> indegree = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            map.put(i, new ArrayList<Integer>());
+            indegree.put(i, 0);
         }
-        for (int i = 0; i < indegree.length; i++) {
-            if (indegree[i] == 0) {
-                queue.offer(i);
+        for (int[] pre : pres) {
+            map.get(pre[1]).add(pre[0]);
+            indegree.put(pre[0], indegree.get(pre[0]) + 1);
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (Map.Entry<Integer, Integer> entry : indegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.offer(entry.getKey());
             }
         }
         while (!queue.isEmpty()) {
-            int temp = queue.poll();
-            list.add(temp);
-            for (int i : map.get(temp)) {
-                indegree[i]--;
-                if (indegree[i] == 0) {
-                    queue.offer(i);
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int temp = queue.poll();
+                res.add(temp);
+                for (int neighbor : map.get(temp)) {
+                    indegree.put(neighbor, indegree.get(neighbor) - 1);
+                    if (indegree.get(neighbor) == 0) {
+                        queue.offer(neighbor);
+                    }
                 }
             }
         }
-        if (list.size() != numCourses) {
-            return new int[0];
+        if (res.size() == numCourses) {
+            return transform(res);
         } else {
-            return transform(list);
+            return new int[0];
         }
-    }
-    private HashMap<Integer, List<Integer>> initialGraph(int n) {
-        HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
-        for (int i = 0; i < n; i++) {
-            map.put(i, new ArrayList<Integer>());
-        }
-        return map;
     }
     private int[] transform(List<Integer> list) {
         int[] res = new int[list.size()];
