@@ -39,3 +39,5 @@ class Solution {
         return p.get(s) == s ? s : find(p.get(s), p);
     }
 }
+
+https://leetcode.com/problems/accounts-merge/discuss/109157/JavaC++-Union-Find
