@@ -1,4 +1,4 @@
-class Solution {
+sclass Solution {
     public String countAndSay(int n) {
         if (n == 0) {
             return "";

@@ -1,32 +1,41 @@
+// initial steps must be done outside for loop
+// for strange test case consideration 
+// like 1 [], 3, [0, 1]
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (prerequisites == null || numCourses < 0) {
+    public boolean canFinish(int numCourses, int[][] pres) {
+        if (pres == null || numCourses < 0) {
             return false;
         }
-        HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
-        int[] indegree = new int[numCourses];
+        if (pres.length == 0) {
+            return true;
+        }
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        Map<Integer, Integer> indegree = new HashMap<>();
         for (int i = 0; i < numCourses; i++) {
+            indegree.put(i, 0);
             map.put(i, new ArrayList<Integer>());
         }
-        for (int[] edge : prerequisites) {
-            map.get(edge[0]).add(edge[1]);
-            
-            indegree[edge[1]]++;
+        Queue<Integer> queue = new LinkedList<>();
+        for (int[] pre : pres) {
+            map.get(pre[1]).add(pre[0]);
+            indegree.put(pre[0], indegree.get(pre[0]) + 1);
         }
-        int count = 0;
-        Queue<Integer> queue = new LinkedList<Integer>();
-        for (int i = 0; i < indegree.length; i++) {
-            if (indegree[i] == 0) {
-                queue.offer(i);
+        for (Map.Entry<Integer, Integer> entry : indegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.offer(entry.getKey());
             }
         }
+        int count = 0;
         while (!queue.isEmpty()) {
-            int temp = queue.poll();
-            count++;
-            for (int i : map.get(temp)) {
-                indegree[i]--;
-                if (indegree[i] == 0) {
-                    queue.offer(i);
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int temp = queue.poll();
+                count++;
+                for (int neighbor : map.get(temp)) {
+                    indegree.put(neighbor, indegree.get(neighbor) - 1);
+                    if (indegree.get(neighbor) == 0) {
+                        queue.offer(neighbor);
+                    }
                 }
             }
         }

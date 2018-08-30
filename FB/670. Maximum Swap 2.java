@@ -18,7 +18,7 @@ class Solution {
         }
         for (int i = 0; i < array.length; i++) {
             for (int j = 9; j > array[i] - '0'; j--) {
-                if (bucket[j] > i) {
+                if (bucket[j] > i) 
                     char temp = array[i];
                     array[i] = array[bucket[j]];
                     array[bucket[j]] = temp;
