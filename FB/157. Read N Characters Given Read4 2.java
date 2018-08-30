@@ -1,6 +1,8 @@
 /* The read4 API is defined in the parent class Reader4.
       int read4(char[] buf); */
-
+//in this problem, the n is fixed
+// program will read n repeatly until read the end
+      // what is end, end is count < 4 or index == n
 public class Solution extends Reader4 {
     /**
      * @param buf Destination buffer
