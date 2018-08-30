@@ -1,3 +1,26 @@
+The key task here is to connect those emails, and this is a perfect use case for union find.
+to group these emails, each group need to have a representative, or parent.
+At the beginning, set each email as its own representative.
+Emails in each account naturally belong to a same group, and should be joined by assigning to the same parent (let's use the parent of first email in that list);
+
+a b c // now b, c have parent a
+d e f // now e, f have parent d
+g a d // now abc, def all merged to group g
+
+parents populated after parsing 1st account: a b c
+a->a
+b->a
+c->a
+
+parents populated after parsing 2nd account: d e f
+d->d
+e->d
+f->d
+
+parents populated after parsing 3rd account: g a d
+g->g
+a->g
+d->g
 class Solution {
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
         List<List<String>> res = new ArrayList<>();
