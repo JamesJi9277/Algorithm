@@ -1,5 +1,6 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
+        // dp
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -8,8 +9,8 @@ class Solution {
         int max = 1;
         for (int i = 0; i < dp.length; i++) {
             for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[j] + 1, dp[i]);
                 }
             }
             max = Math.max(max, dp[i]);
@@ -20,37 +21,36 @@ class Solution {
 
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        if (nums == null || nums.length < 1) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
             return 0;
         }
-        int[] res = new int[nums.length];
-        int len = 0;
-        res[0] = nums[0];
-        len++;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] < res[0]) {
-                res[0] = nums[i];
-            } else if (res[len - 1] < nums[i]) {
-                res[len++] = nums[i]; 
+        for (int i = 0; i < nums.length; i++) {
+            if (res.isEmpty() || res.get(res.size() - 1) < nums[i]) {
+                res.add(nums[i]);
+            } else if (nums[i] < res.get(0)) {
+                res.set(0, nums[i]);
             } else {
-                int index = binarySearch(res, 0, len - 1, nums[i]);
-                res[index] = nums[i];
+                int index = search(res, nums[i]);
+                res.set(index, nums[i]);
             }
         }
-        return len;
+        return res.size();
     }
-    private int binarySearch(int[] res, int start, int end, int target) {
+    private int search(List<Integer> res, int target) {
+        int start = 0;
+        int end = res.size() - 1;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (res[mid] == target) {
+            if (res.get(mid) == target) {
                 return mid;
-            } else if (res[mid] > target) {
+            } else if (res.get(mid) > target) {
                 end = mid;
             } else {
                 start = mid;
             }
         }
-        if (res[start] == target) {
+        if (res.get(start) == target) {
             return start;
         } else {
             return end;
