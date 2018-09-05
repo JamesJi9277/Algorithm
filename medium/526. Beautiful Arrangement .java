@@ -1,44 +1,33 @@
 class Solution {
+    int count = 0;
     public int countArrangement(int n) {
-        if (n < 1) {
-            return 0;
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> nums = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            nums.add(i);
         }
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        List<Integer> temp = new ArrayList<Integer>();
-        int count = 0;
-        int[] nums = new int[n];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = i + 1;
-        }
-        helper(res, temp, nums);
-        for (List<Integer> list : res) {
-            if (isValid(list)) {
-                count++;
-            }
-        }
+        List<Integer> temp = new ArrayList<>();
+        boolean[] visited = new boolean[n];
+        helper(res, temp, nums, visited);
         return count;
     }
-    private void helper(List<List<Integer>> res, List<Integer> temp, int[] nums) {
-        if (temp.size() == nums.length) {
-            res.add(new ArrayList<Integer>(temp));
+    private void helper(List<List<Integer>> res, List<Integer> temp, List<Integer> nums, boolean[] visited) {
+        if (nums.size() == temp.size()) {
+            count++;
             return;
         }
-        for (int i = 0; i < nums.length; i++) {
-            if (temp.contains(nums[i])) {
+        for (int i = 0; i < nums.size(); i++) {
+            if (visited[nums.get(i) - 1]) {
                 continue;
             }
-            temp.add(nums[i]);
-            helper(res, temp, nums);
-            temp.remove(temp.size() - 1);
-        }
-    }
-    private boolean isValid(List<Integer> list) {
-        for (int i = 0; i < list.size(); i++) {
-            if (!((i + 1) % list.get(i) == 0 || list.get(i) % (i + 1) == 0)) {
-                return false;
+            if ((nums.get(i) % (temp.size() + 1) == 0 || (temp.size() + 1) % nums.get(i) == 0)) {
+                visited[nums.get(i) - 1] = true;
+                temp.add(nums.get(i));
+                helper(res, temp, nums, visited);
+                temp.remove(temp.size() - 1);
+                visited[nums.get(i) - 1] = false;
             }
         }
-        return true;
     }
 }
 
