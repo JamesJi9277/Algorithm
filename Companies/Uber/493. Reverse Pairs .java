@@ -1,9 +1,3 @@
-// This is because an important reverse pair satisfies nums[i] > 2*nums[j]. 
-// Pay attention to the greater sign here. 
-// The search function in the BIT solution will return the number of elements 
-// greater than or equal to the given target element. If we don't shift 2*nums[j] up by 1, the answer will 
-// include elements that are equal to 2 * nums[j], 
-// which by definition do NOT count as important reverse pairs.
 class Solution {
     public int reversePairs(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -71,6 +65,45 @@ class Solution {
         int mid = start + (end - start) / 2;
         int left = helper(nums, start, mid);
         int right = helper(nums, mid + 1, end);
+        int[] merge = new int[end - start + 1];
+        int i = start;
+        int j = mid + 1;
+        int pointer = j;
+        int count = 0;
+        int k = 0;
+        while (i <= mid) {
+            while (pointer <= end && (long)nums[i] > (long)2 * nums[pointer]) {
+                pointer++;
+            }
+            count += pointer - (mid + 1);
+            while (j <= end && nums[i] >= nums[j]) {
+                merge[k++] = nums[j++];
+            }
+            merge[k++] = nums[i++];
+        }
+        while (j <= end) {
+            merge[k++] = nums[j++];
+        }
+        System.arraycopy(merge, 0, nums, start, merge.length);
+        return left + right + count;
+    }
+}
+
+
+class Solution {
+    public int reversePairs(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        return helper(nums, 0, nums.length - 1);
+    }
+    private int helper(int[] nums, int start, int end) {
+        if (start >= end) {
+            return 0;
+        }
+        int mid = start + (end - start) / 2;
+        int left = helper(nums, start, mid);
+        int right = helper(nums, mid + 1, end);
         Arrays.sort(nums, start, mid + 1);
         Arrays.sort(nums, mid + 1, end + 1);
         int i = start;
@@ -87,82 +120,3 @@ class Solution {
         return left + right + count;
     }
 }
-
-class Solution {
-    public int reversePairs(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        return helper(nums, 0, nums.length - 1);
-    }
-    private int helper(int[] nums, int start, int end) {
-        if (start >= end) {
-            return 0;
-        }
-        int mid = start + (end - start) / 2;
-        int left = helper(nums, start, mid);
-        int right = helper(nums, mid + 1, end);
-        int[] merge = new int[end - start + 1];
-        int i = start;
-        int j = mid + 1;
-        int pointer = j;
-        int count = 0;
-        int k = 0;
-        while (i <= mid) {
-            while (pointer <= end && (long)nums[i] > (long)2 * nums[pointer]) {
-                pointer++;
-            }
-            count += pointer - (mid + 1);
-            while (j <= end && nums[i] >= nums[j]) {
-                merge[k++] = nums[j++];
-            }
-            merge[k++] = nums[i++];
-        }
-        while (j <= end) {
-            merge[k++] = nums[j++];
-        }
-        System.arraycopy(merge, 0, nums, start, merge.length);
-        return left + right + count;
-    }
-}
-
-
-class Solution {
-    public int reversePairs(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        return helper(nums, 0, nums.length - 1);
-    }
-    private int helper(int[] nums, int start, int end) {
-        if (start >= end) {
-            return 0;
-        }
-        int mid = start + (end - start) / 2;
-        int left = helper(nums, start, mid);
-        int right = helper(nums, mid + 1, end);
-        int[] merge = new int[end - start + 1];
-        int i = start;
-        int j = mid + 1;
-        int pointer = j;
-        int count = 0;
-        int k = 0;
-        while (i <= mid) {
-            while (pointer <= end && (long)nums[i] > (long)2 * nums[pointer]) {
-                pointer++;
-            }
-            count += pointer - (mid + 1);
-            while (j <= end && nums[i] >= nums[j]) {
-                merge[k++] = nums[j++];
-            }
-            merge[k++] = nums[i++];
-        }
-        while (j <= end) {
-            merge[k++] = nums[j++];
-        }
-        System.arraycopy(merge, 0, nums, start, merge.length);
-        return left + right + count;
-    }
-}
-http://www.cnblogs.com/grandyang/p/6657956.html
-https://leetcode.com/problems/reverse-pairs/discuss/97268/general-principles-behind-problems-similar-to-reverse-pairs

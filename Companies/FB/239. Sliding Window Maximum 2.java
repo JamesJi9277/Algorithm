@@ -48,28 +48,36 @@ class Solution {
     }
 }
 
-public class Solution {
+class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return nums;
         }
-        int[] res = new int[nums.length - k + 1];
-        int index = 0;
-        Deque<Integer> deque = new LinkedList<>();
+        int[] leftMax = new int[nums.length];
+        int[] rightMax = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
-            // remove number out of range k
-            while (!deque.isEmpty() && deque.peek() < i - k + 1) {
-                deque.poll();
+            if (i == 0) {
+                leftMax[0] = nums[0];
+            } else if (i % k == 0) {
+                leftMax[i] = nums[i];
+            } else {
+                leftMax[i] = Math.max(leftMax[i - 1], nums[i]);
             }
-            // reove number
-            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
-                deque.pollLast();
+        }
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (i == nums.length - 1) {
+                rightMax[i] = nums[i];
+            } else if (i % k == 0) {
+                rightMax[i] = nums[i];
+            } else {
+                rightMax[i] = Math.max(rightMax[i + 1], nums[i]);
             }
-            deque.offer(i);
-            if (i >= k - 1) {
-                res[index++] = nums[deque.peek()];
-            }
+        }
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = Math.max(rightMax[i], leftMax[i + k - 1]);
         }
         return res;
     }
+}
 }
