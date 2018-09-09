@@ -9,11 +9,11 @@ class Solution {
         return res;
     }
     private void helper(List<String> res, StringBuffer sb, int left, int right) {
-        if (left > right) {
-            return;
-        }
         if (left == 0 && right == 0) {
             res.add(new String(sb));
+            return;
+        }
+        if (left > right) {
             return;
         }
         if (left > 0) {
