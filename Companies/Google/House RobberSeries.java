@@ -31,7 +31,7 @@ class Solution {
 // 将list分成两种情况
 // 并且在判断的时候注意起点是(i + 1)
 class Solution {
-    public int rob2(int[] nums) {
+    public int rob(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -45,10 +45,10 @@ class Solution {
             return 0;
         }
         int cur = nums[start];
-        int prev1 = nums[start];
+        int prev1 = cur;
         int prev2 = 0;
         for (int i = start + 1; i <= end; i++) {
-            cur = Math.max(prev1, prev2 + nums[i]);
+            cur = Math.max(prev2 + nums[i], prev1);
             prev2 = prev1;
             prev1 = cur;
         }

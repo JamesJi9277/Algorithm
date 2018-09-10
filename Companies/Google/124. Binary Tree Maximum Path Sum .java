@@ -28,3 +28,20 @@ class Solution {
         return Math.max(left, right) + root.val;
     }
 }
+
+class Solution {
+    public int maxPathSum(TreeNode root) {
+        int[] maxPath = new int[]{Integer.MIN_VALUE};
+        dfs(root, maxPath);
+        return maxPath[0];
+    }
+    private int dfs(TreeNode root, int[] maxPath) {
+        if (root == null) {
+            return 0;
+        }
+        int left = Math.max(dfs(root.left, maxPath), 0);
+        int right = Math.max(dfs(root.right, maxPath), 0);
+        maxPath[0] = Math.max(maxPath[0], root.val + left + right);
+        return root.val + Math.max(left, right);
+    }
+}
