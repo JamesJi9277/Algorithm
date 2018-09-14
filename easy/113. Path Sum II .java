@@ -32,3 +32,33 @@ class Solution {
         temp.remove(temp.size() - 1);
     }
 }
+
+
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        List<Integer> temp = new ArrayList<>();
+        helper(res, temp, root, sum);
+        return res;
+    }
+    private void helper(List<List<Integer>> res, List<Integer> temp, TreeNode root, int sum) {
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null && sum == root.val) {
+            temp.add(root.val);
+            res.add(new ArrayList<Integer>(temp));
+            temp.remove(temp.size() - 1);
+            return;
+        }
+        temp.add(root.val);
+        helper(res, temp, root.left, sum - root.val);
+        temp.remove(temp.size() - 1);
+        temp.add(root.val);
+        helper(res, temp, root.right, sum - root.val);
+        temp.remove(temp.size() - 1);
+    }
+}
