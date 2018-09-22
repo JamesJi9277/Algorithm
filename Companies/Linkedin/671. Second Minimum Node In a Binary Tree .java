@@ -14,6 +14,7 @@ class Solution {
         if (right == root.val) {
             right = findSecondMinimumValue(root.right);
         }
+        // left and right are both leaves node
         if (left != -1 && right != - 1) {
             return Math.min(left, right);
         } else {
