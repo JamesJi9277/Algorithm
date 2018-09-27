@@ -50,7 +50,7 @@ class Solution {
                 start = mid;
             }
         }
-        if (res.get(start) == target) {
+        if (res.get(start) >= target) {
             return start;
         } else {
             return end;
