@@ -65,29 +65,28 @@ class Solution {
 class Solution {
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
         Map<Character, Integer> map = new HashMap<>();
+        if (s == null || s.length() == 0 || k < 1) {
+            return 0;
+        }
         int left = 0;
         int right = 0;
-        int count = 0;
-        int res = 0;
+        int max = 1;
         while (right < s.length()) {
             char c = s.charAt(right);
             map.put(c, map.getOrDefault(c, 0) + 1);
-            if (map.get(c) == 1) {
-                count++;
-            }
             right++;
-            if (count <= k) {
-                res = Math.max(res, right - left);
+            if (map.size() <= k) {
+                max = Math.max(max, right - left);
             }
-            while (count > k) {
+            while (map.size() > k) {
                 char lc = s.charAt(left);
                 map.put(lc, map.get(lc) - 1);
                 if (map.get(lc) == 0) {
-                    count--;
+                    map.remove(lc);
                 }
                 left++;
             }
         }
-        return res;
+        return max;
     }
 }

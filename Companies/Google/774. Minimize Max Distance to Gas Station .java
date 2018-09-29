@@ -1,20 +1,22 @@
 class Solution {
-    public double minmaxGasDist(int[] stations, int k) {
-        int count = 0;
-        double left = 0;
-        double right = stations[stations.length - 1] - stations[0];
-        while (left + 1e-6 < right) {
-            double mid = left + (right - left) / 2;
-            count = 0;
+    public double minmaxGasDist(int[] stations, int K) {
+        if (stations == null || stations.length == 0) {
+            return 0.0;
+        }
+        double start = 0;
+        double end = stations[stations.length - 1] - stations[0];
+        while (start + 1e-6 < end) {
+            double mid = start + (end - start) / 2;
+            int count = 0;
             for (int i = 0; i < stations.length - 1; i++) {
-                count += Math.ceil((stations[i + 1] - stations[i]) / mid) - 1;
+                count += (int)(Math.ceil((stations[i + 1] - stations[i]) / mid) - 1);
             }
-            if (count > k) {
-                left = mid;
+            if (count > K) {
+                start = mid;
             } else {
-                right = mid;
+                end = mid;
             }
         }
-        return left;
+        return start;
     }
 }

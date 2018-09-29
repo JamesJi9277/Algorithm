@@ -1,66 +1,71 @@
 class AutocompleteSystem {
 
     class TrieNode {
-        Map<Character, TrieNode> children;
-        Map<String, Integer> counts;
         boolean isWord;
+        Map<Character, TrieNode> children;
+        Map<String, Integer> freq;
         public TrieNode() {
-            children = new HashMap<>();
-            counts = new HashMap<>();
-            isWord = false;
+            this.isWord = false;
+            this.children = new HashMap<>();
+            this.freq = new HashMap<>();
         }
     }
     class Pair {
-        String s;
-        int c;
-        public Pair(String s, int c) {
-            this.s = s;
-            this.c = c;
+        String key;
+        int count;
+        public Pair(String key, int count) {
+            this.key = key;
+            this.count = count;
         }
     }
+    StringBuffer sb;
     TrieNode root;
-    String prefix;
     public AutocompleteSystem(String[] sentences, int[] times) {
         root = new TrieNode();
-        prefix = "";
-        
-        for (int i = 0; i < sentences.length; i++) {
-            add(sentences[i], times[i]);
+        sb = new StringBuffer();
+        for (int i = 0; i < times.length; i++) {
+            update(root, sentences[i], times[i]);
         }
     }
-    private void add(String s, int count) {
+    
+    public void update(TrieNode root, String s, int time) {
         TrieNode temp = root;
         for (char c : s.toCharArray()) {
-            if (!temp.children.containsKey(c)) {
-                temp.children.put(c, new TrieNode());
-            }
+            temp.children.putIfAbsent(c, new TrieNode());
             temp = temp.children.get(c);
-            temp.counts.put(s, temp.counts.getOrDefault(s, 0) + count);
+            temp.freq.put(s, temp.freq.getOrDefault(s, 0) + time);
         }
         temp.isWord = true;
     }
     
     public List<String> input(char c) {
         if (c == '#') {
-            add(prefix, 1);
-            prefix = "";
+            update(root, sb.toString(), 1);
+            sb = new StringBuffer();
             return new ArrayList<String>();
         }
-        prefix += c;
+        sb.append(c);
+        // search
         TrieNode temp = root;
-        for (char cc : prefix.toCharArray()) {
-            if (!temp.children.containsKey(cc)) {
+        for (char c1 : sb.toString().toCharArray()) {
+            if (!temp.children.containsKey(c1)) {
                 return new ArrayList<String>();
             }
-            temp = temp.children.get(cc);
+            temp = temp.children.get(c1);
         }
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (a.c == b.c ? a.s.compareTo(b.s) : b.c - a.c));
-        for (String s : temp.counts.keySet()) {
-            pq.offer(new Pair(s, temp.counts.get(s)));
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> {
+            if (a.count == b.count) {
+                return a.key.compareTo(b.key);
+            } else {
+                return b.count - a.count;
+            }
+        });
+        for (Map.Entry<String, Integer> entry : temp.freq.entrySet()) {
+            pq.offer(new Pair(entry.getKey(), entry.getValue()));
         }
         List<String> res = new ArrayList<>();
-        for (int i = 0; i < 3 && !pq.isEmpty(); i++) {
-            res.add(pq.poll().s);
+        while (res.size() < 3 && !pq.isEmpty()) {
+            res.add(pq.poll().key);
         }
         return res;
     }

@@ -1,4 +1,29 @@
 class Solution {
+    public int longestConsecutive(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        return Math.max(helper(root), Math.max(longestConsecutive(root.left), longestConsecutive(root.right)));
+    }
+    private int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int max = 1;
+        if (root.left != null && root.left.val == root.val + 1) {
+            max = Math.max(max, helper(root.left) + 1);
+        }
+        if (root.right != null && root.right.val == root.val + 1) {
+            max = Math.max(max, helper(root.right) + 1);
+        }
+        return max;
+    }
+}
+
+class Solution {
     int max = 1;
     public int longestConsecutive(TreeNode root) {
         if (root == null) {
