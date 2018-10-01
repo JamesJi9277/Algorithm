@@ -23,24 +23,19 @@ class Solution {
     }
 }
 
-
 class Solution {
     public int countBattleships(char[][] board) {
-        int battleships=0;
-        for(int row= 0; row<board.length;++row){
-            
-            for(int col = 0; col<board[row].length;++col){
-                boolean isInSpot=(board[row][col]=='X');
-               
-                if((col>0 && isInSpot&& board[row][col-1]=='X')||
-                        (row>0 && isInSpot && board[row-1][col]=='X')){
-                            //not a new battleship
+        int count = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                boolean isShip = board[i][j] == 'X' ? true : false;
+                if ((i != 0 && board[i - 1][j] == 'X') || (j != 0 && board[i][j - 1] == 'X')) {
+                    continue;
+                } else if (isShip) {
+                    count++;
                 }
-                else if(isInSpot){
-                    ++battleships;
-                }
-               }
-             }
-        return battleships;
-    }                
+            }
+        }
+        return count;
+    }
 }

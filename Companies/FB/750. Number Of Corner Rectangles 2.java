@@ -1,20 +1,42 @@
 class Solution {
     public int countCornerRectangles(int[][] grid) {
-        if (grid == null || grid.length == 0 || grid[0].length == 0) {
-            return 0;
-        }
-        int sum = 0;
-        for (int i = 0; i < grid.length - 1; i++) {
-            for (int j = i + 1; j < grid.length; j++) {
-                int count = 0;
-                for (int k = 0; k < grid[0].length; k++) {
-                    if (grid[i][k] == 1 && grid[j][k] == 1) {
-                        count++;
+        if(grid.length < 2 || grid[0].length < 2) return 0;
+        int[][] count = new int[grid[0].length][grid[0].length];
+        int ans = 0;
+        for(int row = 0; row < grid.length; ++row){
+            for(int i = 0; i < grid[0].length - 1; ++i){
+                if(grid[row][i] == 1){
+                    for(int j = i+1; j < grid[0].length; ++j){
+                        if(grid[row][j] == 1){
+                            ans += count[i][j];
+                            count[i][j]++;
+                        }
                     }
                 }
-                sum += (count - 1) * count / 2;
             }
         }
-        return sum;
+        return ans;
+    }
+}
+
+class Solution {
+    public int countCornerRectangles(int[][] grid) {
+        int res = 0;
+        for (int i = 0; i < grid.length - 1; i++) {
+            for (int j = 0; j < grid[0].length - 1; j++) {
+                if (grid[i][j] == 0) {
+                    continue;
+                }
+                for (int m = i + 1; m < grid.length; m++) {
+                    for (int n = j + 1; n < grid[0].length; n++) {
+                        if (grid[m][n] == 0) {
+                            continue;
+                        }
+                        res += grid[i][n] * grid[m][j];
+                    }
+                }
+            }
+        }
+        return res;
     }
 }

@@ -28,3 +28,25 @@ class Solution {
         return res[n];
     }
 }
+
+class Solution {
+    public int numTrees(int n) {
+        return helper(1, n);
+    }
+    private int helper(int start, int end) {
+        // empty tree
+        if (start > end) {
+            return 1;
+        }
+        if (start == end) {
+            return 1;
+        }
+        int res = 0;
+        for (int i = start; i <= end; i++) {
+            int left = helper(start, i - 1);
+            int right = helper(i + 1, end);
+            res += left * right;
+        }
+        return res;
+    }
+}
