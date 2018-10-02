@@ -1,11 +1,12 @@
 class Solution {
     public int repeatedStringMatch(String A, String B) {
-        StringBuilder as = new StringBuilder(A);
-        for (int rep = 1; rep <= B.length() / A.length() + 2; rep++) {
-            if (as.toString().contains(B)) {
-                return rep;
+        StringBuffer sb = new StringBuffer(A);
+        for (int i = 1; i <= B.length() / A.length() + 2; i++) {
+            if (sb.toString().contains(B)) {
+                return i;
+            } else {
+                sb.append(A);
             }
-            as.append(new StringBuilder(A));
         }
         return -1;
     }
