@@ -77,22 +77,26 @@ class SnakeGame {
         @param height - screen height 
         @param food - A list of food positions
         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
-    int[][] food;
-    int foodIndex;
-    Set<Integer> set;
-    Deque<Integer> body;
+    Deque<Integer> deque;
     int width;
     int height;
+    int head;
+    int tail;
+    Set<Integer> set;
     int score;
+    int[][] food;
+    int foodIndex;
     public SnakeGame(int width, int height, int[][] food) {
-        this.food = food;
+        deque = new LinkedList<>();
         this.width = width;
         this.height = height;
-        body = new LinkedList();
-        set = new HashSet<>();
+        head = 0;
+        set = new HashSet();
+        deque.offer(0);
         set.add(0);
-        body.offerFirst(0);
-        score = 0;
+        this.score = 0;
+        this.food = food;
+        this.foodIndex = 0;
     }
     
     /** Moves the snake.
@@ -103,41 +107,40 @@ class SnakeGame {
         if (score == -1) {
             return -1;
         }
-        int rowHead = body.peek() / width;
-        int colHead = body.peek() % width;
-        switch (direction) {
-            case "U" :
-                rowHead--;
-                break;
-            case "D":
-                rowHead++;
-                break;
-            case "L":
-                colHead--;
-                break;
-            case "R" :
-                colHead++;
-                break;
+        int row = deque.peekFirst() / width;
+        int col = deque.peekFirst() % width;
+        int head = deque.peek();
+        int tail = deque.peekLast();
+        if (direction.equals("U")) {
+            row--;
+        } else if (direction.equals("D")) {
+            row++;
+        } else if (direction.equals("L")) {
+            col--;
+        } else {
+            col++;
         }
-        int head = rowHead * width + colHead;
-        set.remove(body.peekLast());
-        if (rowHead < 0 || rowHead >= height || colHead < 0 || colHead >= width || set.contains(head)) {
+        set.remove(tail);
+        int newHead = row * width + col;
+        if (row < 0 || row >= height || col < 0 || col >= width || set.contains(newHead)) {
             score = -1;
-            return score;
+            return -1;
         }
-        
-        set.add(head);
-        body.offerFirst(head);
-        
-        if (foodIndex < food.length && rowHead == food[foodIndex][0] && colHead == food[foodIndex][1]) {
+        deque.offerFirst(newHead);
+        set.add(newHead);
+        if (foodIndex < food.length && food[foodIndex][0] == row && food[foodIndex][1] == col) {
             score++;
+            set.add(tail);
             foodIndex++;
-            set.add(body.peekLast());
             return score;
         }
-        
-        body.pollLast();
+        deque.pollLast();
         return score;
-        
     }
 }
+
+/**
+ * Your SnakeGame object will be instantiated and called as such:
+ * SnakeGame obj = new SnakeGame(width, height, food);
+ * int param_1 = obj.move(direction);
+ */
