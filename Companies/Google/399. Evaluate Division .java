@@ -1,104 +1,98 @@
 class Solution {
-    class Node {
+    class Pair {
         String key;
         double value;
-        public Node() {
-            
-        }
-        public Node(String key, double value) {
+        public Pair(String key, double value) {
             this.key = key;
             this.value = value;
         }
     }
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        Map<String, List<Node>> map = new HashMap<>();
-        int index = 0;
-        for (String[] e : equations) {
-            map.putIfAbsent(e[0], new ArrayList<Node>());
-            map.putIfAbsent(e[1], new ArrayList<Node>());
-            map.get(e[0]).add(new Node(e[1], values[index]));
-            map.get(e[1]).add(new Node(e[0], 1 / values[index++]));
+        if (equations == null) {
+            return null;
+        }
+        Map<String, List<Pair>> map = new HashMap<>();
+        for (int i = 0; i < equations.length; i++) {
+            map.putIfAbsent(equations[i][0], new ArrayList<Pair>());
+            map.putIfAbsent(equations[i][1], new ArrayList<Pair>());
+            map.get(equations[i][0]).add(new Pair(equations[i][1], values[i]));
+            map.get(equations[i][1]).add(new Pair(equations[i][0], 1 / values[i]));
         }
         double[] res = new double[queries.length];
-        index = 0;
-        for (String[] q : queries) {
-            res[index++] = dfs(map, q[0], q[1], new HashSet<String>(), 1.0);
+        for (int i = 0; i < queries.length; i++) {
+            res[i] = helper(map, queries[i][0], queries[i][1], new HashSet<String>(), 1.0);
         }
         return res;
     }
-    private double dfs(Map<String, List<Node>> map, String start, String end, HashSet<String> visited, double value) {
+    private double helper(Map<String, List<Pair>> map, String start, String end, Set<String> visited, double cur) {
         if (!map.containsKey(start) || !map.containsKey(end)) {
             return -1.0;
         }
-        if (visited.contains(start)) {
+        if (!visited.add(start)) {
             return -1.0;
         }
         if (start.equals(end)) {
-            return value;
+            return cur;
         }
-        visited.add(start);
-        for (Node node : map.get(start)) {
-            double temp = dfs(map, node.key, end, visited, value * node.value);
-            if (temp > 0) {
-                return temp;
+        for (Pair p : map.get(start)) {
+            double res = helper(map, p.key, end, visited, cur * p.value);
+            if (res > 0) {
+                return res;
             }
         }
-        visited.remove(start);
         return -1.0;
     }
 }
 
 class Solution {
+    class Pair {
+        String key;
+        double value;
+        public Pair(String key, double value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        Map<String, String> parent = new HashMap<>();
-        Map<String, Double> val = new HashMap<>();
-        for (int i = 0; i < values.length; i++) {
+        Map<String, Pair> map = new HashMap<>();
+        for (int i = 0; i < equations.length; i++) {
             String s1 = equations[i][0];
             String s2 = equations[i][1];
             double value = values[i];
-            parent.putIfAbsent(s1, s1);
-            parent.putIfAbsent(s2, s2);
-            val.putIfAbsent(s1, 1.0);
-            val.putIfAbsent(s2, 1.0);
-            String root1 = findRoot(parent, val, s1);
-            String root2 = findRoot(parent, val, s2);
-            parent.put(root1, root2);
-            double val1 = getDistance(parent, val, s1);
-            double val2 = getDistance(parent, val, s2);
-            val.put(root1, val2 * value / val1);
+            map.putIfAbsent(s1, new Pair(s1, 1.0));
+            map.putIfAbsent(s2, new Pair(s2, 1.0));
+            Pair root1 = findRoot(map, s1);
+            Pair root2 = findRoot(map, s2);
+            if (!root1.key.equals(root2.key)) {
+                map.put(root1.key, new Pair(s2, value / root1.value));
+            }
         }
         double[] res = new double[queries.length];
         Arrays.fill(res, -1);
-        for (int i = 0; i < queries.length; i++) {
+        for (int i = 0; i < res.length; i++) {
             String s1 = queries[i][0];
             String s2 = queries[i][1];
-            if (!parent.containsKey(s1) || !parent.containsKey(s2)) {
+            if (!map.containsKey(s1) || !map.containsKey(s2)) {
                 continue;
             }
-            String root1 = findRoot(parent, val, s1);
-            String root2 = findRoot(parent, val, s2);
-            if (root1.equals(root2)) {
-                res[i] = getDistance(parent, val, s1) / getDistance(parent, val, s2);
+            Pair root1 = findRoot(map, s1);
+            Pair root2 = findRoot(map, s2);
+            if (!root1.key.equals(root2.key)) {
+                continue;
             }
+            res[i] = root1.value / root2.value;
         }
         return res;
     }
-    private String findRoot(Map<String, String> parent, Map<String, Double> val, String s) {
-        while (!s.equals(parent.get(s))) {
-            double val1 = val.get(s);
-            double val2 = val.get(parent.get(s));
-            parent.put(s, parent.get(parent.get(s)));
-            val.put(s, val1 * val2);
-            s = parent.get(s);
+    private Pair findRoot(Map<String, Pair> map, String s) {
+        String temp = s;
+        double res = 1.0;
+        while (!s.equals(map.get(s).key)) {
+            Pair p = map.get(s);
+            res *= p.value;
+            s = p.key;
         }
-        return s;
-    }
-    private double getDistance(Map<String, String> parent, Map<String, Double> val, String s) {
-        double res= 1.0;
-        while (!s.equals(parent.get(s))) {
-            res *= val.get(s);
-            s = parent.get(s);
-        }
-        return res;
+        map.put(temp, new Pair(s, res));
+        return map.get(temp);
     }
 }
