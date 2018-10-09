@@ -1,29 +1,31 @@
 class Solution {
     public int rotatedDigits(int N) {
         int count = 0;
-        for (int i = 1; i <= N; i ++) {
-            if (isValid(i)) count ++;
+        for (int i = 1; i <= N; i++) {
+            if (valid(i)) {
+                count++;
+            }
         }
         return count;
     }
-    
-    public boolean isValid(int N) {
-        /*
-         Valid if N contains ATLEAST ONE 2, 5, 6, 9
-         AND NO 3, 4 or 7s
-         */
-        boolean validFound = false;
-        while (N > 0) {
-            if (N % 10 == 2) validFound = true;
-            if (N % 10 == 5) validFound = true;
-            if (N % 10 == 6) validFound = true;
-            if (N % 10 == 9) validFound = true;
-            if (N % 10 == 3) return false;
-            if (N % 10 == 4) return false;
-            if (N % 10 == 7) return false;
-            N = N / 10;
+    private boolean valid(int num) {
+        String s = "" + num;
+        int index = 0;
+        boolean flag = false;
+        while (index < s.length()) {
+            char c = s.charAt(index);
+            if (index == 0 && c == '0') {
+                return false;
+            }
+            if (c == '2' || c == '5' || c == '6' || c == '9') {
+                flag = true;
+                index++;
+            } else if (c == '0' || c == '1' || c == '8') {
+                index++;
+            } else {
+                return false;
+            }
         }
-        return validFound;
+        return flag;
     }
 }
-isvalidifcontainsatleastone2， 5， ，6 9 and no 3,4,7

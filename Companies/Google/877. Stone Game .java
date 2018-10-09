@@ -1,17 +1,19 @@
 class Solution {
     public boolean stoneGame(int[] piles) {
-        Integer[][] dp = new Integer[piles.length][piles.length];
-        return helper(piles, 0, piles.length - 1, dp) >= 0;
-        
-    }
-    private int helper(int[] nums, int start, int end, Integer[][] dp) {
-        if (start > end) {
-            return 0;
+        if (piles == null || piles.length == 0) {
+            return false;
         }
-        if (dp[start][end] != null) {
+        int[][] dp = new int[piles.length][piles.length];
+        return helper(dp, piles, 0, piles.length - 1) >= 0;
+    }
+    private int helper(int[][] dp, int[] piles, int start, int end) {
+        if (start == end) {
+            return piles[start];
+        }
+        if (dp[start][end] != 0) {
             return dp[start][end];
         }
-        dp[start][end] = Math.max(nums[start] - helper(nums, start + 1, end, dp), nums[end] - helper(nums, start, end - 1, dp));
+        dp[start][end] = Math.max(piles[start] - helper(dp, piles, start + 1, end), piles[end] - helper(dp, piles, start, end - 1));
         return dp[start][end];
     }
 }

@@ -33,7 +33,6 @@ class Solution {
     }
 }
 
-
 class Solution {
     public boolean checkValidString(String s) {
         if (s == null || s.length() == 0) {
@@ -53,7 +52,32 @@ class Solution {
         } else if (s.charAt(index) == ')') {
             return helper(s, index + 1, leftCount - 1);
         } else {
-            return helper(s, index + 1, leftCount + 1) || helper(s, index + 1, leftCount - 1) || helper(s, index + 1, leftCount);
+            return helper(s, index + 1, leftCount) || helper(s, index + 1, leftCount + 1) || helper(s, index + 1, leftCount - 1);
         }
+    }
+}
+
+class Solution {
+    public boolean checkValidString(String s) {
+        int min = 0;
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                min++;
+            } else {
+                min--;
+            }
+            if (c != ')') {
+                max++;
+            } else {
+                max--;
+            }
+            if (max < 0) {
+                return false;
+            }
+            min = Math.max(min, 0);
+        }
+        return min == 0;
     }
 }

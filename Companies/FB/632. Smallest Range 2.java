@@ -3,9 +3,6 @@ class Solution {
         int row;
         int col;
         int value;
-        public Element() {
-            
-        }
         public Element(int row, int col, int value) {
             this.row = row;
             this.col = col;
@@ -13,33 +10,33 @@ class Solution {
         }
     }
     public int[] smallestRange(List<List<Integer>> nums) {
-        if (nums == null || nums.size() == 0) {
-            return new int[2];
-        }
-        PriorityQueue<Element> pq = new PriorityQueue<>((a, b) -> (a.value - b.value));
+        int[] res = new int[2];
         int index = 0;
-        int max = 0;
-        for (List<Integer> num : nums) {
-            Element e = new Element(index++, 0, num.get(0));
-            pq.offer(e);
-            max = Math.max(max, e.value);
-        }
+        PriorityQueue<Element> pq = new PriorityQueue<>((a, b) -> {
+            return a.value - b.value;
+        });
+        int max = Integer.MIN_VALUE;
+        int range = Integer.MAX_VALUE;
         int left = 0;
         int right = 0;
-        int range = Integer.MAX_VALUE;
+        for (List<Integer> list : nums) {
+            Element element = new Element(index++, 0, list.get(0));
+            pq.offer(element);
+            max = Math.max(max, element.value);
+        }
         while (pq.size() == nums.size()) {
-            Element temp = pq.poll();
-            if (max - temp.value < range) {
-                left = temp.value;
+            Element e = pq.poll();
+            if (max - e.value < range) {
+                range = max - e.value;
+                left = e.value;
                 right = max;
-                range = max - temp.value;
             }
-            if (temp.col + 1 < nums.get(temp.row).size()) {
-                temp.col = temp.col + 1;
-                temp.value = nums.get(temp.row).get(temp.col);
-                pq.offer(temp);
+            if (e.col + 1 < nums.get(e.row).size()) {
+                e.col = e.col + 1;
+                e.value = nums.get(e.row).get(e.col);
+                max = Math.max(max, e.value);
+                pq.offer(e);
             }
-            max = Math.max(max, temp.value);
         }
         return new int[]{left, right};
     }
