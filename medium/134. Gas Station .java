@@ -10,6 +10,7 @@ class Solution {
             int diff = gas[i] - cost[i];
             tank += diff;
             if (tank < 0) {
+                // 记得tank也需要置零处理
                 tank = 0;
                 index = i + 1;
             }

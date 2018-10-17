@@ -1,17 +1,24 @@
 class Solution {
     public int carFleet(int target, int[] position, int[] speed) {
-        TreeMap<Integer, Double> map = new TreeMap<>();
+        PriorityQueue<Double> pq = new PriorityQueue<>(Collections.reverseOrder());
+        Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < position.length; i++) {
-            map.put(-position[i], (double)(target - position[i]) / speed[i]);
+            map.put(position[i], speed[i]);
         }
-        int res = 0;
-        double cur = 0;
-        for (Map.Entry<Integer, Double> entry : map.entrySet()) {
-            if (entry.getValue() > cur) {
-                cur = entry.getValue();
-                res++;
+        Arrays.sort(position);
+        int count = 0;
+        for (int i = position.length - 1; i >= 0; i--) {
+            double time = (double)(target - position[i]) / map.get(position[i]);
+            if (pq.isEmpty()) {
+                pq.offer(time);
+                count++;
+            } else if (time <= pq.peek()) {
+                continue;
+            } else if (time > pq.peek()) {
+                count++;
+                pq.offer(time);
             }
         }
-        return res;
+        return count;
     }
 }

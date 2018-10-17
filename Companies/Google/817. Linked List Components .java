@@ -8,26 +8,21 @@
  */
 class Solution {
     public int numComponents(ListNode head, int[] G) {
-        Map<Integer, Integer> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
         for (int i : G) {
-            map.put(i, i);
-        }
-        if (head == null) {
-            return 0;
+            set.add(i);
         }
         int count = 0;
         while (head != null) {
-            if (head != null && !map.containsKey(head.val)){
-                head = head.next;
-            }else{
-                while (head != null && map.containsKey(head.val)){
-                    head = head.next;
-                }
+            if (set.contains(head.val)) {
                 count++;
-                if (head != null) {
+                set.remove(head.val);
+                while (head.next != null && set.contains(head.next.val)) {
+                    set.remove(head.next.val);
                     head = head.next;
                 }
             }
+            head = head.next;
         }
         return count;
     }

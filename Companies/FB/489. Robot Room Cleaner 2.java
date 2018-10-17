@@ -1,30 +1,14 @@
-/**
- * // This is the robot's control interface.
- * // You should not implement it, or speculate about its implementation
- * interface Robot {
- *     // Returns true if the cell in front is open and robot moves into the cell.
- *     // Returns false if the cell in front is blocked and robot stays in the current cell.
- *     public boolean move();
- *
- *     // Robot will stay in the same cell after calling turnLeft/turnRight.
- *     // Each turn will be 90 degrees.
- *     public void turnLeft();
- *     public void turnRight();
- *
- *     // Clean the current cell.
- *     public void clean();
- * }
- */
 class Solution {
     public void cleanRoom(Robot robot) {
         if (robot == null) {
             return;
         }
-        dfs(robot, 0, 0, new HashSet<String>(), 0);
+        Set<String> set = new HashSet<>();
+        helper(robot, 0, 0, 0, set);
     }
-    private void dfs(Robot robot, int row, int col, HashSet<String> visited, int cleanDir) {
-        String temp = row + "->" + col;
-        if (!(visited.add(temp))) {
+    private void helper(Robot robot, int row, int col, int facing, Set<String> set) {
+        String path = "" + row + "->" + col;
+        if (!set.add(path)) {
             return;
         }
         robot.clean();
@@ -32,21 +16,16 @@ class Solution {
             if (robot.move()) {
                 int x = row;
                 int y = col;
-                switch (cleanDir) {
-                    case 0:
-                        x--;
-                        break;
-                    case 90:
-                        y++;
-                        break;
-                    case 180:
-                        x++;
-                        break;
-                    case 270:
-                        y--;
-                        break;
+                if (facing == 0) {
+                    x--;
+                } else if (facing == 90) {
+                    y++;
+                } else if (facing == 180) {
+                    x++;
+                } else {
+                    y--;
                 }
-                dfs(robot, x, y, visited, cleanDir);
+                helper(robot, x, y, facing, set);
                 robot.turnRight();
                 robot.turnRight();
                 robot.move();
@@ -54,8 +33,8 @@ class Solution {
                 robot.turnRight();
             }
             robot.turnRight();
-            cleanDir += 90;
-            cleanDir %= 360;
+            facing += 90;
+            facing %= 360;
         }
     }
 }

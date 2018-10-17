@@ -1,37 +1,31 @@
-public class Solution {
+class Solution {
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
-        List<String> res = new ArrayList<String>();
-        if(nums == null || nums.length == 0) {
-            helper(res, lower, upper);
+        List<String> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            res.add(getString(lower, upper));
             return res;
         }
-        if(lower < nums[0]) {
-            helper(res, lower, nums[0] - 1);
+        if (upper < lower || nums[0] < lower || nums[nums.length - 1] > upper) {
+            return res;
         }
-        for(int i = 0; i < nums.length - 1; i++) {
-            if(nums[i] == nums[i + 1] - 1) {
-                continue;
+        if (nums[0] != lower) {
+            res.add(getString(lower, nums[0] - 1));
+        }
+        for (int i = 1; i < nums.length; i++) {
+            if ((long)nums[i] - (long)nums[i - 1] >= 2) {
+                res.add(getString(nums[i - 1] + 1, nums[i] - 1));
             }
-            helper(res, nums[i] + 1, nums[i + 1] - 1);
         }
-        if(upper > nums[nums.length - 1]) {
-            helper(res, nums[nums.length - 1] + 1, upper);
+        if (nums[nums.length - 1] != upper) {
+            res.add(getString(nums[nums.length - 1] + 1, upper));
         }
-        return res;
+        return res;        
     }
-    private void helper(List<String> res, int start, int end) {
-        StringBuffer sb = new StringBuffer();
-        if(start == end) {
-            sb.append(start + "");
-            res.add(sb.toString());
-            return;
-        }
-        else {
-            sb.append(start + "");
-            sb.append("->");
-            sb.append(end + "");
-            res.add(sb.toString());
-            return;
+    private String getString(int lower, int upper) {
+        if (lower == upper) {
+            return "" + lower;
+        } else {
+            return "" + lower + "->" + upper;
         }
     }
 }

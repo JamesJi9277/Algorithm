@@ -51,3 +51,53 @@ class Solution {
         return sb.length() == indegree.size() ? sb.toString() : "";
     }
 }
+
+class Solution {
+    public String alienOrder(String[] words) {
+        if (words == null) {
+            return "";
+        }
+        Map<Character, List<Character>> map = new HashMap<>();
+        Map<Character, Integer> indegree = new HashMap<>();
+        Queue<Character> queue = new LinkedList<>();
+        for (String s : words) {
+            for (char c : s.toCharArray()) {
+                map.putIfAbsent(c, new ArrayList<Character>());
+                indegree.putIfAbsent(c, 0);
+            }
+        }
+        for (int i = 0; i < words.length - 1; i++) {
+            String s1 = words[i];
+            String s2 = words[i + 1];
+            for (int j = 0; j < Math.min(s1.length(), s2.length()); j++) {
+                if (s1.charAt(j) == s2.charAt(j)) {
+                    continue;
+                } else {
+                    map.get(s1.charAt(j)).add(s2.charAt(j));
+                    indegree.put(s2.charAt(j), indegree.get(s2.charAt(j)) + 1);
+                    break;
+                }
+            }
+        }
+        for (Map.Entry<Character, Integer> entry : indegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.offer(entry.getKey());
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                char c = queue.poll();
+                sb.append(c);
+                for (char neighbor : map.get(c)) {
+                    indegree.put(neighbor, indegree.get(neighbor) - 1);
+                    if (indegree.get(neighbor) == 0) {
+                        queue.offer(neighbor);
+                    }
+                }
+            }
+        }
+        return sb.length() == map.size() ? sb.toString() : "";
+    }
+}

@@ -3,60 +3,22 @@ class Solution {
         if (nums == null || nums.length == 0) {
             return 0;
         }
-        int[][] memo = new int[nums.length][nums.length];
-        return helper(nums, 0, nums.length - 1, memo);
+        int[][] dp = new int[nums.length][nums.length];
+        return helper(nums, dp, 0, nums.length - 1);
     }
-    private int helper(int[] nums, int start, int end, int[][] memo) {
+    private int helper(int[] nums, int[][] dp, int start, int end) {
         if (start > end) {
             return 0;
         }
-        if (memo[start][end] != 0) {
-            return memo[start][end];
+        if (dp[start][end] != 0) {
+            return dp[start][end];
         }
-        int max = Integer.MIN_VALUE;
         for (int i = start; i <= end; i++) {
-            int val = helper(nums, start, i - 1, memo) + helper(nums, i + 1, end, memo)
-                + getValue(nums, start - 1) * nums[i] * getValue(nums, end + 1);
-            max = Math.max(max, val);
+            dp[start][end] = Math.max(dp[start][end], helper(nums, dp, start, i - 1) + helper(nums, dp, i + 1, end) + getNum(nums, start - 1) * getNum(nums, end + 1) * nums[i]);
         }
-        memo[start][end] = max;
-        return max;
+        return dp[start][end];
     }
-    private int getValue(int[] nums, int index) {
-        if (index == -1 || index == nums.length) {
-            return 1;
-        } else {
-            return nums[index];
-        }
-    }
-}
-
-
-class Solution {
-    public int maxCoins(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        int[][] memo = new int[nums.length][nums.length];
-        return helper(nums, 0, nums.length - 1, memo);
-    }
-    private int helper(int[] nums, int start, int end, int[][] memo) {
-        if (start > end) {
-            return 0;
-        }
-        if (memo[start][end] != 0) {
-            return memo[start][end];
-        }
-        int max = 0;
-        for (int i = start; i <= end; i++) {
-            int temp = helper(nums, start, i - 1, memo) + getValue(nums, start - 1) * getValue(nums, i) * getValue(nums, end + 1)
-                + helper(nums, i + 1, end, memo);
-            max = Math.max(max, temp);
-        }
-        memo[start][end] = max;
-        return max;
-    }
-    private int getValue(int[] nums, int index) {
+    private int getNum(int[] nums, int index) {
         if (index < 0 || index >= nums.length) {
             return 1;
         } else {

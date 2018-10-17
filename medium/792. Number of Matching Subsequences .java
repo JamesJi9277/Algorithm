@@ -1,26 +1,19 @@
 class Solution {
     public int numMatchingSubseq(String S, String[] words) {
         int count = 0;
-        for (String s : words) {
-            if (isValid(s, S)) {
+        for (String word : words) {
+            if (isSub(word, S)) {
                 count++;
             }
         }
         return count;
     }
-    private boolean isValid(String s, String t) {
-        if (s.length() == 0) {
-            return true;
-        }
-        if (s.length() > t.length()) {
-            return false;
-        }
-        int index1 = 0;
-        int index2 = 0;
-        while (index2 < t.length()) {
-            if (t.charAt(index2++) == s.charAt(index1)) {
-                index1++;
-                if (index1 == s.length()) {
+    private boolean isSub(String s1, String s2) {
+        int index = 0;
+        for (int i = 0; i < s2.length(); i++) {
+            if (s1.charAt(index) == s2.charAt(i)) {
+                index++;
+                if (index == s1.length()) {
                     return true;
                 }
             }
@@ -32,56 +25,52 @@ class Solution {
 class Solution {
     public int numMatchingSubseq(String S, String[] words) {
         int count = 0;
-        Map<Character, Deque<String>> map = new HashMap<Character, Deque<String>>();
-        for (char c = 'a'; c <= 'z'; c++) {
-            map.put(c, new LinkedList<String>());
+        Map<Character, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < S.length(); i++) {
+            char c = S.charAt(i);
+            map.putIfAbsent(c, new ArrayList<Integer>());
+            map.get(c).add(i);
         }
-        for (String s : words) {
-            map.get(s.charAt(0)).addLast(s);
-        }
-    
-        for (char c : S.toCharArray()) {
-            Deque<String> queue = map.get(c);
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                String word = queue.removeFirst();
-                if (word.length() == 1) {
-                    count++;
-                } else {
-                    map.get(word.charAt(1)).addLast(word.substring(1));
-                }
+        for (String word : words) {
+            if (valid(map, word)) {
+                count++;
             }
         }
         return count;
     }
-}
-
-
-class Solution {
-    public int numMatchingSubseq(String S, String[] words) {
-        HashMap<Character, Deque<String>> map = new HashMap<Character, Deque<String>>();
-        if (words == null || words.length == 0) {
-            return 0;
-        }
-        int count = 0;
-        for (char c = 'a'; c <= 'z'; c++) {
-            map.put(c, new LinkedList<String>());
-        }
-        for (String s : words) {
-            map.get(s.charAt(0)).addLast(s);
-        }
-        for (char c : S.toCharArray()) {
-            Deque<String> queue = map.get(c);
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                String word = queue.removeFirst();
-                if (word.length() == 1) {
-                    count++;
-                } else {
-                    map.get(word.charAt(1)).addLast(word.substring(1));
-                }
+    private boolean valid(Map<Character, List<Integer>> map, String s) {
+        int prev = -1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!map.containsKey(c)) {
+                return false;
+            }
+            int index = helper(map.get(c), prev + 1);
+            if (index == -1) {
+                return false;
+            } else {
+                prev = index;
             }
         }
-        return count;
+        return true;
+    }
+    private int helper(List<Integer> list, int target) {
+        int start = 0;
+        int end = list.size() - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (list.get(mid) < target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        if (list.get(start) >= target) {
+            return list.get(start);
+        } else if (list.get(end) >= target) {
+            return list.get(end);
+        } else {
+            return -1;
+        }
     }
 }

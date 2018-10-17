@@ -20,3 +20,5 @@ class Solution {
         return start;
     }
 }
+先枚举距离，然后再进行对当前距离的插入个数的统计
+再根据情况左右移动

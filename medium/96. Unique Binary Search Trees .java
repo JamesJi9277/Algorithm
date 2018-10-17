@@ -50,3 +50,18 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int numTrees(int n) {
+        int[] res = new int[n + 1];
+        res[0] = 1;
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 0; j < i; j++) {
+                // j stands for node number in left subtree
+                res[i] += (res[j] * res[i - j - 1]);
+            }
+        }
+        return res[n];
+    }
+}
