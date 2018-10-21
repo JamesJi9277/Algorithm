@@ -29,3 +29,4 @@ class Solution {
         return res;
     }
 }
+// sort on regular basis and then check pq's size. greater then poll, equal then calculate

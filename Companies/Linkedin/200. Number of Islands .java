@@ -21,19 +21,22 @@ class Solution {
         return uf.count;
     }
     class UnionFind {
-        int count = 0;
+        char[][] grid;
         int[] roots;
         int m;
         int n;
+        int count;
         public UnionFind(char[][] grid) {
+            this.grid = grid;
             this.m = grid.length;
             this.n = grid[0].length;
-            roots = new int[m * n];
+            this.roots = new int[m * n];
+            this.count = 0;
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
                     if (grid[i][j] == '1') {
-                        roots[i * n + j] = i * n + j;
                         count++;
+                        roots[i * n + j] = i * n + j;
                     }
                 }
             }
@@ -46,16 +49,14 @@ class Solution {
                 count--;
             }
         }
-        private int findRoot(int[] roots, int index) {
+        public int findRoot(int[] roots, int index) {
             while (index != roots[index]) {
-                roots[index] = roots[roots[index]];
                 index = roots[index];
             }
             return index;
         }
     }
 }
-
 
 class Solution {
     public int numIslands(char[][] grid) {
@@ -67,20 +68,20 @@ class Solution {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == '1') {
                     count++;
-                    helper(grid, i, j);
+                    dfs(grid, i, j);
                 }
             }
         }
         return count;
     }
-    private void helper(char[][] grid, int x, int y) {
+    private void dfs(char[][] grid, int x, int y) {
         if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == '0') {
             return;
         }
         grid[x][y] = '0';
-        helper(grid, x + 1, y);
-        helper(grid, x - 1, y);
-        helper(grid, x, y + 1);
-        helper(grid, x, y - 1);
+        dfs(grid, x + 1, y);
+        dfs(grid, x - 1, y);
+        dfs(grid, x, y + 1);
+        dfs(grid, x, y - 1);
     }
 }

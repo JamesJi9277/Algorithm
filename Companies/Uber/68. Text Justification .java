@@ -2,17 +2,17 @@ class Solution {
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> res = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
-        for (String s : words) {
-            if (sb.length() + s.length() > maxWidth) {
-                res.add(adjust(sb.toString(), maxWidth));
+        for (String word : words) {
+            if (sb.length() + word.length() > maxWidth) {
+                res.add(adjust(sb, maxWidth));
                 sb = new StringBuffer();
             }
-            if (sb.length() + s.length() == maxWidth) {
-                sb.append(s);
+            if (sb.length() + word.length() == maxWidth) {
+                sb.append(word);
                 res.add(new String(sb));
                 sb = new StringBuffer();
-            } else if (sb.length() + s.length() < maxWidth) {
-                sb.append(s);
+            } else if (sb.length() + word.length() < maxWidth) {
+                sb.append(word);
                 sb.append(" ");
             }
         }
@@ -24,18 +24,18 @@ class Solution {
         }
         return res;
     }
-    private String adjust(String s1, int maxWidth) {
-        String[] strs = s1.split(" ");
-        int len = 0;
-        for (String s : strs) {
-            len += s.length();
+    private String adjust(StringBuffer sb, int max) {
+        String[] str = sb.toString().split(" ");
+        int count = 0;
+        for (String s : str) {
+            count += s.length();
         }
-        for (int i = 0; i < maxWidth - len; i++) {
-            int index = (strs.length > 1) ? i % (strs.length - 1) : 0;
-            strs[index] += " ";
+        for (int i = 0; i < max - count; i++) {
+            int index = (str.length == 1) ? 0 : (i % (str.length - 1));
+            str[index] += " ";
         }
-        StringBuffer sb = new StringBuffer();
-        for (String s : strs) {
+        sb = new StringBuffer();
+        for (String s : str) {
             sb.append(s);
         }
         return sb.toString();

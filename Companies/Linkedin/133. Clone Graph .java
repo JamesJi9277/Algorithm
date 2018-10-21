@@ -9,8 +9,7 @@ public class Solution {
         list.add(node);
         map.put(node, new UndirectedGraphNode(node.label));
         while (index < list.size()) {
-            UndirectedGraphNode temp = list.get(index++);
-            for (UndirectedGraphNode neighbor : temp.neighbors) {
+            for (UndirectedGraphNode neighbor : list.get(index++).neighbors) {
                 if (!map.containsKey(neighbor)) {
                     map.put(neighbor, new UndirectedGraphNode(neighbor.label));
                     list.add(neighbor);

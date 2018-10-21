@@ -11,8 +11,8 @@ class Solution {
         if (root == null) {
             return -1;
         }
-        int level = 1 + Math.max(helper(res, root.left), helper(res, root.right));
-        if (res.size() <= level) {
+        int level = Math.max(helper(res, root.left), helper(res, root.right)) + 1;
+        if (res.size() == level) {
             res.add(new ArrayList<Integer>());
         }
         res.get(level).add(root.val);

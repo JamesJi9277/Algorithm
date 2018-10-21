@@ -56,22 +56,23 @@ class WordDistance {
     }
     
     public int shortest(String word1, String word2) {
-        if (word1.equals(word2)) {
-            return 0;
-        }
         List<Integer> list1 = map.get(word1);
         List<Integer> list2 = map.get(word2);
+        int max = Integer.MAX_VALUE;
         int index1 = 0;
         int index2 = 0;
-        int min = Integer.MAX_VALUE;
         while (index1 < list1.size() && index2 < list2.size()) {
-            min = Math.min(min, Math.abs(list1.get(index1) - list2.get(index2)));
-            if (list1.get(index1) - list2.get(index2) > 0) {
-                index2++;
-            } else if (list1.get(index1) - list2.get(index2) < 0) {
+            int val1 = list1.get(index1);
+            int val2 = list2.get(index2);
+            if (Math.abs(val1 - val2) < max) {
+                max = Math.abs(val1 - val2);
+            }
+            if (val1 < val2) {
                 index1++;
+            } else {
+                index2++;
             }
         }
-        return min;
+        return max;
     }
 }

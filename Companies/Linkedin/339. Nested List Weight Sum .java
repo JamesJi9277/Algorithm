@@ -1,41 +1,38 @@
 class Solution {
     public int depthSum(List<NestedInteger> nestedList) {
-        if (nestedList == null || nestedList.size() == 0) {
-            return 0;
-        }
-        int sum = 0;
-        int level = 1;
         Queue<NestedInteger> queue = new LinkedList<>(nestedList);
+        int sum = 0;
+        int depth = 1;
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 NestedInteger nest = queue.poll();
                 if (nest.isInteger()) {
-                    sum += nest.getInteger() * level;
+                    sum += depth * nest.getInteger();
                 } else {
                     queue.addAll(nest.getList());
                 }
             }
-            level++;
+            depth++;
         }
         return sum;
     }
 }
 
 class Solution {
+    int sum = 0;
     public int depthSum(List<NestedInteger> nestedList) {
-        return helper(nestedList, 1);
+        helper(nestedList, 1);
+        return sum;
     }
-    private int helper(List<NestedInteger> nestedList, int level) {
-        int sum = 0;
-        for (NestedInteger nest : nestedList) {
+    private void helper(List<NestedInteger> nested, int depth) {
+        for (NestedInteger nest : nested) {
             if (nest.isInteger()) {
-                sum += nest.getInteger() * level;
+                sum += nest.getInteger() * depth;
             } else {
-                sum += helper(nest.getList(), level + 1);
+                helper(nest.getList(), depth + 1);
             }
         }
-        return sum;
     }
 }
 

@@ -1,10 +1,12 @@
 class MaxStack {
 
     /** initialize your data structure here. */
+    Stack<Integer> stack1;
     Stack<Integer> stack;
     PriorityQueue<Integer> pq;
     public MaxStack() {
         stack = new Stack<>();
+        stack1 = new Stack<>();
         pq = new PriorityQueue<>(Collections.reverseOrder());
     }
     
@@ -14,9 +16,9 @@ class MaxStack {
     }
     
     public int pop() {
-        int x = stack.pop();
-        pq.remove(x);
-        return x;
+        int temp = stack.pop();
+        pq.remove(temp);
+        return temp;
     }
     
     public int top() {
@@ -28,15 +30,19 @@ class MaxStack {
     }
     
     public int popMax() {
-        int x = pq.poll();
-        Stack<Integer> temp = new Stack<>();
-        while (!stack.isEmpty() && stack.peek() != x) {
-            temp.push(stack.pop());
+        int temp = pq.poll();
+        boolean seen = false;
+        while (!stack.isEmpty()) {
+            if (!seen && stack.peek() == temp) {
+                stack.pop();
+                seen = true;
+            } else {
+                stack1.push(stack.pop());
+            }
         }
-        stack.pop();
-        while (!temp.isEmpty()) {
-            stack.push(temp.pop());
+        while (!stack1.isEmpty()) {
+            stack.push(stack1.pop());
         }
-        return x;
+        return temp;
     }
 }

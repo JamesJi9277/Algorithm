@@ -27,62 +27,30 @@ class Solution {
     }
 }
 
-
-/**
- * // This is the interface that allows for creating nested lists.
- * // You should not implement it, or speculate about its implementation
- * public interface NestedInteger {
- *     // Constructor initializes an empty nested list.
- *     public NestedInteger();
- *
- *     // Constructor initializes a single integer.
- *     public NestedInteger(int value);
- *
- *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
- *     public boolean isInteger();
- *
- *     // @return the single integer that this NestedInteger holds, if it holds a single integer
- *     // Return null if this NestedInteger holds a nested list
- *     public Integer getInteger();
- *
- *     // Set this NestedInteger to hold a single integer.
- *     public void setInteger(int value);
- *
- *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
- *     public void add(NestedInteger ni);
- *
- *     // @return the nested list that this NestedInteger holds, if it holds a nested list
- *     // Return null if this NestedInteger holds a single integer
- *     public List<NestedInteger> getList();
- * }
- */
 class Solution {
     public int depthSumInverse(List<NestedInteger> nestedList) {
-        if (nestedList == null || nestedList.size() == 0) {
-            return 0;
-        }
         List<List<Integer>> res = new ArrayList<>();
-        int sum = 0;
         Queue<NestedInteger> queue = new LinkedList<>(nestedList);
         while (!queue.isEmpty()) {
             int size = queue.size();
-            List<Integer> list = new ArrayList<>();
+            List<Integer> temp1 = new ArrayList<>();
             for (int i = 0; i < size; i++) {
-                NestedInteger nest = queue.poll();
-                if (nest.isInteger()) {
-                    list.add(nest.getInteger());
+                NestedInteger temp = queue.poll();
+                if (temp.isInteger()) {
+                    temp1.add(temp.getInteger());
                 } else {
-                    queue.addAll(nest.getList());
+                    queue.addAll(temp.getList());
                 }
             }
-            res.add(list);
+            res.add(new ArrayList<Integer>(temp1));
         }
-        int weight = res.size();
-        for (List<Integer> list : res) {
-            for (int i : list) {
-                sum += i * weight;
+        int depth = res.size();
+        int sum = 0;
+        for (List<Integer> temp : res) {
+            for (int i : temp) {
+                sum += i * depth;
             }
-            weight--;
+            depth--;
         }
         return sum;
     }

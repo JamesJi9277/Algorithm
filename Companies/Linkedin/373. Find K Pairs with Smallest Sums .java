@@ -19,3 +19,31 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    class Pair {
+        int x;
+        int y;
+        int sum;
+        public Pair(int x, int y, int sum) {
+            this.x = x;
+            this.y = y;
+            this.sum = sum;
+        }
+    }
+    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<int[]> res = new ArrayList<>();
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (a.sum - b.sum));
+        for (int i : nums1) {
+            for (int j : nums2) {
+                pq.offer(new Pair(i, j, i + j));
+            }
+        }
+        while (!pq.isEmpty() && res.size() < k) {
+            Pair p = pq.poll();
+            res.add(new int[]{p.x, p.y});
+        }
+        return res;
+    }
+}

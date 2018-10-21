@@ -1,15 +1,12 @@
 class Solution {
     public boolean validTree(int n, int[][] edges) {
-        if (edges == null) {
-            return false;
-        }
         int[] roots = new int[n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < roots.length; i++) {
             roots[i] = i;
         }
         for (int[] edge : edges) {
-            int root1 = findRoot(roots, edge[0]);
-            int root2 = findRoot(roots, edge[1]);
+            int root1 = findRoot(edge[0], roots);
+            int root2 = findRoot(edge[1], roots);
             if (root1 == root2) {
                 return false;
             } else {
@@ -18,8 +15,8 @@ class Solution {
         }
         return edges.length == n - 1;
     }
-    private int findRoot(int[] roots, int index) {
-        while (roots[index] != index) {
+    private int findRoot(int index, int[] roots) {
+        while (index != roots[index]) {
             index = roots[index];
         }
         return index;

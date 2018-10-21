@@ -1,38 +1,33 @@
 class Solution {
     public boolean canPartitionKSubsets(int[] nums, int k) {
-        if (nums == null) {
+        if (nums == null || nums.length == 0 || k < 1) {
             return false;
         }
         int sum = 0;
         for (int i : nums) {
             sum += i;
         }
-        if (k == 0 || sum % k != 0) {
+        if (sum % k != 0) {
             return false;
         }
         boolean[] visited = new boolean[nums.length];
-        return helper(nums, visited, 0, 0, k, sum / k);
+        return helper(nums, visited, 0, k, sum / k, 0, 0);
     }
-    private boolean helper(int[] nums, boolean[] visited, int index, int sum, int k, int target) {
-        if (sum > target) {
-            return false;
-        }
-        if ( k == 0) {
+    private boolean helper(int[] nums, boolean[] visited, int count, int k, int target, int sum, int index) {
+        if (count == k - 1) {
             return true;
         }
-        if (sum == target) {
-            return helper(nums, visited, 0, 0, k - 1, target);
+        if (target == sum) {
+            return helper(nums, visited, count + 1, k, target, 0, 0);
         }
         for (int i = index; i < nums.length; i++) {
             if (visited[i]) {
                 continue;
             }
             visited[i] = true;
-            sum += nums[i];
-            if (helper(nums, visited, i + 1, sum, k, target)) {
+            if (helper(nums, visited, count, k, target, sum + nums[i], i + 1)) {
                 return true;
             }
-            sum -= nums[i];
             visited[i] = false;
         }
         return false;

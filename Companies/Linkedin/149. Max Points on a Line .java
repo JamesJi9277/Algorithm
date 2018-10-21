@@ -1,30 +1,30 @@
 class Solution {
     public int maxPoints(Point[] points) {
+        int res = 0;
         if (points == null || points.length == 0) {
             return 0;
         }
-        int max = 0;
-        for (int i = 0; i < points.length; i++) {
+        for (Point p : points) {
+            int samePoint = 0;
             int sameX = 1;
-            int samePos = 0;
             Map<Double, Integer> map = new HashMap<>();
-            for (int j = 0; j < points.length; j++) {
-                if (i == j) {
+            for (Point q : points) {
+                if (p == q) {
                     continue;
                 }
-                if (points[i].x == points[j].x && points[i].y == points[j].y) {
-                    samePos++;
+                if (p.x == q.x && p.y == q.y) {
+                    samePoint++;
                 }
-                if (points[i].x == points[j].x) {
+                if (p.x == q.x) {
                     sameX++;
                     continue;
                 }
-                double k = (double)(points[i].y - points[j].y) / (double)(points[i].x - points[j].x);
+                double k = (double)(p.x - q.x) / (double)(p.y - q.y);
                 map.put(k, map.getOrDefault(k, 1) + 1);
-                max = Math.max(max, map.get(k) + samePos);
+                res = Math.max(res, map.get(k) + samePoint);
             }
-            max = Math.max(max, sameX);
+            res = Math.max(res, sameX);
         }
-        return max;
+        return res;
     }
 }

@@ -1,8 +1,5 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if (s == null || t == null) {
-            return null;
-        }
         Map<Character, Integer> map = new HashMap<>();
         for (char c : t.toCharArray()) {
             map.put(c, map.getOrDefault(c, 0) + 1);
@@ -22,18 +19,19 @@ class Solution {
                 }
             }
             right++;
+
             while (count == map.size()) {
                 if (right - left < min) {
+                    min = right - left;
                     minLeft = left;
                     minRight = right;
-                    min = right - left;
                 }
                 char lc = s.charAt(left);
                 if (map.containsKey(lc)) {
-                    if (map.get(lc) == 0) {
+                    map.put(lc, map.get(lc) + 1);
+                    if (map.get(lc) == 1) {
                         count--;
                     }
-                    map.put(lc, map.get(lc) + 1);
                 }
                 left++;
             }

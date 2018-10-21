@@ -26,20 +26,17 @@ class Solution {
 On
 class Solution {
     public int shortestDistance(String[] words, String word1, String word2) {
-        if (word1.equals(word2)) {
-            return 0;
-        }
-        int index1 = -1;
-        int index2 = -1;
+        int i = -1;
+        int j = -1;
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < words.length; i++) {
-            if (words[i].equals(word1)) {
-                index1 = i;
-            } else if (words[i].equals(word2)) {
-                index2 = i;
+        for (int k = 0; k < words.length; k++) {
+            if (words[k].equals(word1)) {
+                i = k;
+            } else if (words[k].equals(word2)) {
+                j = k;
             }
-            if (index1 != -1 && index2 != -1) {
-                min = Math.min(min, Math.abs(index1 - index2));
+            if (i != -1 && j != -1) {
+                min = Math.min(min, Math.abs(j - i));
             }
         }
         return min;

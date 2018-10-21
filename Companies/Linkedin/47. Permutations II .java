@@ -5,24 +5,24 @@ class Solution {
             return res;
         }
         List<Integer> temp = new ArrayList<>();
-        boolean[] used = new boolean[nums.length];
+        boolean[] visited = new boolean[nums.length];
         Arrays.sort(nums);
-        helper(res, temp, nums, used);
+        helper(nums, res, temp, visited);
         return res;
     }
-    private void helper(List<List<Integer>> res, List<Integer> temp, int[] nums, boolean[] used) {
+    private void helper(int[] nums, List<List<Integer>> res, List<Integer> temp, boolean[] visited) {
         if (temp.size() == nums.length) {
             res.add(new ArrayList<Integer>(temp));
             return;
         }
         for (int i = 0; i < nums.length; i++) {
-            if (used[i] || (i != 0 && nums[i] == nums[i - 1] && !used[i - 1])) {
+            if (visited[i] || (i != 0 && nums[i] == nums[i - 1] && !visited[i - 1])) {
                 continue;
             }
             temp.add(nums[i]);
-            used[i] = true;
-            helper(res, temp, nums, used);
-            used[i] = false;
+            visited[i] = true;
+            helper(nums, res, temp, visited);
+            visited[i] = false;
             temp.remove(temp.size() - 1);
         }
     }

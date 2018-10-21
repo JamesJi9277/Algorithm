@@ -1,35 +1,28 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-
 time On 
 space Ok 
+
 class Solution {
     public List<Integer> closestKValues(TreeNode root, double target, int k) {
         Deque<Integer> deque = new LinkedList<>();
-        inorder(root, target, k, deque);
+        inorder(deque, root, target, k);
         return (LinkedList)deque;
     }
-    private void inorder(TreeNode root, double target, int k, Deque<Integer> deque) {
+    private void inorder(Deque<Integer> deque, TreeNode root, double target, int k) {
         if (root == null) {
             return;
         }
-        inorder(root.left, target, k, deque);
+        inorder(deque, root.left, target, k);
         if (deque.size() < k) {
-            deque.offerLast(root.val);
+            deque.offer(root.val);
         } else {
-            if (Math.abs(deque.peekFirst() - target) > Math.abs(root.val - target)) {
+            if (Math.abs((double)deque.peekFirst() - target) > Math.abs((double)root.val - target)) {
                 deque.pollFirst();
                 deque.offer(root.val);
+            } else {
+                return;
             }
         }
-        inorder(root.right, target, k, deque);
+        inorder(deque, root.right, target, k);
     }
 }
 
