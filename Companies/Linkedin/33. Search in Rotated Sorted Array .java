@@ -17,7 +17,7 @@ class Solution {
                     start = mid;
                 }
             } else if (nums[mid] < nums[start]) {
-                if (nums[end] >= target && target >= nums[mid]) {
+                if (nums[mid] <= target && target <= nums[end]) {
                     start = mid;
                 } else {
                     end = mid;
