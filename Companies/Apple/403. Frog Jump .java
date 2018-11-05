@@ -1,6 +1,6 @@
 class Solution {
     public boolean canCross(int[] stones) {
-        if (stones == null) {
+        if (stones == null || stones.length == 0) {
             return false;
         }
         Set<Integer> set = new HashSet<>();
@@ -10,14 +10,15 @@ class Solution {
             }
             set.add(stones[i]);
         }
-        return helper(stones, set, 0, 0, stones[stones.length - 1]);
+        return helper(stones[0], stones[stones.length - 1], set, 0);
     }
-    private boolean helper(int[] stones, Set<Integer> set, int start, int step, int end) {
+    private boolean helper(int start, int end, Set<Integer> set, int step) {
         if (start == end) {
             return true;
         }
-        for (int i = step + 1; i >= step - 1 && i > 0; i--) {
-            if (set.contains(start + i) && helper(stones, set, start + i, i, end)) {
+        for (int i = step + 1; i > 0 && i >= step - 1; i--) {
+            int next = start + i;
+            if (set.contains(next) && helper(next, end, set, i)) {
                 return true;
             }
         }

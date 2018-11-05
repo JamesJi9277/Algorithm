@@ -2,16 +2,15 @@ class Solution {
     public int[] exclusiveTime(int n, List<String> logs) {
         int[] res = new int[n];
         Stack<int[]> stack = new Stack<>();
-        for (String s : logs) {
-            String[] strs = s.split(":");
-            int index = Integer.valueOf(strs[0]);
-            int time = Integer.valueOf(strs[2]);
-            if (strs[1].equals("start")) {
+        for (String log : logs) {
+            String[] str = log.split(":");
+            int index = Integer.valueOf(str[0]);
+            int time = Integer.valueOf(str[2]);
+            if (str[1].equals("start")) {
                 stack.push(new int[]{index, time});
             } else {
-                // 整体这个大时间是一个diff
-                int diff = time - stack.pop()[1] + 1;
-                // 接下来再是微调
+                int[] temp = stack.pop();
+                int diff = time - temp[1] + 1;
                 res[index] += diff;
                 if (!stack.isEmpty()) {
                     res[stack.peek()[0]] -= diff;

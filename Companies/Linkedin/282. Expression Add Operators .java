@@ -23,7 +23,7 @@ class Solution {
             long temp = Long.valueOf(num.substring(index, i + 1));
             if (index == 0) {
                 sb.append(temp);
-                helper(res, sb, num, target, i + 1, temp, temp);
+                helper(res, sb, num, target, i + 1, curSum + temp, temp);
                 sb.setLength(len);
             } else {
                 sb.append("+");

@@ -17,3 +17,18 @@ class Solution {
         return sb.reverse().toString();
     }
 }
+
+class Solution {
+    public String reverseWords(String s) {
+        String[] str = s.split(" ");
+        StringBuffer sb = new StringBuffer();
+        for (String s1 : str) {
+            sb.append(helper(s1));
+            sb.append(" ");
+        }
+        return sb.toString().trim();
+    }
+    private String helper(String s) {
+        return new StringBuffer(s).reverse().toString();
+    }
+}

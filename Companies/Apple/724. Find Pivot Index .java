@@ -25,3 +25,24 @@ class Solution {
         return -1;
     }
 }
+
+class Solution {
+    public int pivotIndex(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int sum = 0;
+        for (int i : nums) {
+            sum += i;
+        }
+        int preSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (sum - nums[i] == 2 * preSum) {
+                return i;
+            } else {
+                preSum += nums[i];
+            }
+        }
+        return -1;
+    }
+}

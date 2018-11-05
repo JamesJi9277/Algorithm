@@ -3,20 +3,19 @@ class Solution {
         boolean[] bold = new boolean[s.length()];
         for (String s1 : dict) {
             int start = 0;
-            while (start >= 0) {
+            while (true) {
                 start = s.indexOf(s1, start);
                 if (start == -1) {
                     break;
                 }
-                for (int i = start; i < start + s1.length(); i++) {
-                    bold[i] = true;
+                for (int i = 0; i < s1.length(); i++) {
+                    bold[start + i] = true;
                 }
                 start++;
             }
         }
         StringBuffer sb = new StringBuffer();
-        boolean added = false;
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < bold.length; i++) {
             if (!bold[i]) {
                 sb.append(s.charAt(i));
             } else {

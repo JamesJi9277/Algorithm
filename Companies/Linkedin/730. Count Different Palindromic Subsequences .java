@@ -34,9 +34,8 @@ private int helper(TreeSet[] positions, Integer[][] cache, int start, int end) {
 
 }
 
-
 class Solution {
-    private static final int mod = 1000000007;
+    int mod = (int)1e9 + 7;
     public int countPalindromicSubsequences(String s) {
         int[][] dp = new int[s.length()][s.length()];
         for (int i = 0; i < s.length(); i++) {
@@ -45,15 +44,13 @@ class Solution {
         for (int len = 1; len < s.length(); len++) {
             for (int i = 0; i + len < s.length(); i++) {
                 int j = i + len;
-                if (s.charAt(i) != s.charAt(j)) {
-                    dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
-                } else {
+                if (s.charAt(i) == s.charAt(j)) {
                     int left = i + 1;
                     int right = j - 1;
-                    while (left <= right && s.charAt(i) != s.charAt(left)) {
+                    while (left < s.length() && s.charAt(left) != s.charAt(i)) {
                         left++;
                     }
-                    while (left <= right && s.charAt(right) != s.charAt(i)) {
+                    while (right >= 0 && s.charAt(right) != s.charAt(j)) {
                         right--;
                     }
                     if (left > right) {
@@ -63,6 +60,8 @@ class Solution {
                     } else {
                         dp[i][j] = 2 * dp[i + 1][j - 1] - dp[left + 1][right - 1];
                     }
+                } else {
+                    dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
                 }
                 dp[i][j] = (dp[i][j] < 0) ? dp[i][j] + mod : dp[i][j] % mod;
             }

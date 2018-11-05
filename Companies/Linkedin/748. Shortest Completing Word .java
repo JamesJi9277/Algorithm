@@ -1,14 +1,37 @@
 class Solution {
     public String shortestCompletingWord(String licensePlate, String[] words) {
-        int[] freq= new int[26];
-        for (char c: licensePlate.toLowerCase().toCharArray()) if (Character.isLowerCase(c)) freq[c-'a']++;
-        String res="";
-        for (String s: words) if ((res.length()==0 || s.length()<res.length()) && ok(Arrays.copyOf(freq, 26), s)) res=s;
+        int[] count = new int[26];
+        licensePlate = licensePlate.toLowerCase();
+        for (char c : licensePlate.toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                count[c - 'a']++;
+            }
+        }
+        String res = "";
+        for (String word : words) {
+            if (match(count, word)) {
+                if (res.equals("")) {
+                    res = word;
+                } else if (res.length() > word.length()) {
+                    res = word;
+                }
+            }
+        }
         return res;
     }
-    public boolean ok(int[] freq, String s){
-        for (char c: s.toCharArray()) freq[c-'a']--;
-        for (int f: freq) if (f>0) return false;
+    private boolean match(int[] count, String word) {
+        int[] count1 = count.clone();
+        for (char c : word.toLowerCase().toCharArray()) {
+            if (!(c >= 'a' && c <= 'z')) {
+                return false;
+            }
+            count1[c - 'a']--;
+        }
+        for (int i : count1) {
+            if (i > 0) {
+                return false;
+            }
+        }
         return true;
     }
 }

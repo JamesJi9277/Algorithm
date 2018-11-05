@@ -9,26 +9,26 @@
  */
 class Solution {
     public void flatten(TreeNode root) {
-         if (root == null) {
-             return;
-         }
-        if (root.left == null && root.right == null) {
+        if (root == null || (root.left == null && root.right == null)) {
             return;
         }
+        flatten(root.left);
+        flatten(root.right);
         if (root.left == null) {
-            flatten(root.right);
+            return ;
+        } else if (root.right == null) {
+            root.right = root.left;
+            root.left = null;
+            return ;
         } else {
-            flatten(root.right);
-            TreeNode right = root.right;
-            flatten(root.left);
-            TreeNode left = root.left;
-            TreeNode temp = left;
+            TreeNode temp = root.left;
             while (temp.right != null) {
                 temp = temp.right;
             }
+            temp.right = root.right;
+            root.right = root.left;
             root.left = null;
-            root.right = left;
-            temp.right = right;
+            return ;
         }
     }
 }

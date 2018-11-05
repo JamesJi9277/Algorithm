@@ -1,65 +1,89 @@
 class MyHashMap {
 
+    /** Initialize your data structure here. */
     class Node {
         int key;
         int value;
-        Node pre;
+        //Node prev;
         Node next;
+        public Node() {
+            
+        }
         public Node(int key, int value) {
             this.key = key;
             this.value = value;
-            pre = null;
+            //prev = null;
             next = null;
         }
     }
-    /** Initialize your data structure here. */
-    int capacity = 1000;
-    Node[] nums;
+    int size = 1000;
+    Node[] array;
     public MyHashMap() {
-        nums = new Node[capacity];
+        array = new Node[1000];
     }
     
     /** value will always be non-negative. */
     public void put(int key, int value) {
-        int index = key % capacity;
+        int index = key % size;
         Node node = new Node(key, value);
-        if (nums[index] == null) {
-            nums[index] = node;
+        if (array[index] == null) {
+            array[index] = node;
         } else {
-            Node head = nums[index];
-            head.pre = node;
-            node.next = head;
-            nums[index] = node;
+            Node temp = array[index];
+            while (temp != null && temp.key != key) {
+                temp = temp.next;
+            }
+            if (temp == null) {
+                node.next = array[index];
+                //array[index].prev = node;
+                array[index] = node;
+            } else {
+                temp.value = value;
+            }
         }
     }
     
     /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
     public int get(int key) {
-        int index = key % capacity;
-        Node node = nums[index];
-        while (node != null && node.key != key) {
-            node = node.next;
-        }
-        if (node == null) {
+        int index = key % size;
+        if (array[index] == null) {
             return -1;
         }
-        return node.value;
+        Node head = array[index];
+        while (head != null) {
+            if (head.key == key) {
+                return head.value;
+            } else {
+                head = head.next;
+            }
+        }
+        return -1;
     }
     
     /** Removes the mapping of the specified value key if this map contains a mapping for the key */
     public void remove(int key) {
-        int index = key % capacity;
-        Node node = nums[index];
-        Node dummy = new Node(0, 0);
-        dummy.next = node;
-        Node runner = dummy;
-        while (runner.next != null) {
-            if (runner.next.key == key) {
-                runner.next = runner.next.next;
+        int index = key % size;
+        if (array[index] == null) {
+            return;
+        }
+        Node dummy = new Node();
+        dummy.next = array[index];
+        Node temp = dummy;
+        while (temp.next != null) {
+            if (temp.next.key == key) {
+                temp.next = temp.next.next;
             } else {
-                runner = runner.next;
+                temp = temp.next;
             }
         }
-        nums[index] = dummy.next;
+        array[index] = dummy.next;
     }
 }
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
