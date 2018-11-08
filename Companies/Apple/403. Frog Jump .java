@@ -13,12 +13,14 @@ class Solution {
         return helper(stones[0], stones[stones.length - 1], set, 0);
     }
     private boolean helper(int start, int end, Set<Integer> set, int step) {
+        if (start > end) {
+            return false;
+        }
         if (start == end) {
             return true;
         }
         for (int i = step + 1; i > 0 && i >= step - 1; i--) {
-            int next = start + i;
-            if (set.contains(next) && helper(next, end, set, i)) {
+            if (set.contains(start + i) && helper(start + i, end, set, i)) {
                 return true;
             }
         }

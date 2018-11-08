@@ -8,11 +8,11 @@ class Solution {
         int[] sorted = nums.clone();
         Arrays.sort(sorted);
         int[] max = new int[]{2, 9, 5, 9};
-        if (nums[0] == 2) {
+        if (sorted[0] == 2) {
             max[1] = 3;
         }
         for (int i = nums.length - 1; i >= 0; i--) {
-            if (nums[i] != sorted[3] && nums[i] < max[i]) {
+            if (nums[i] < max[i]) {
                 for (int j = 0; j < sorted.length; j++) {
                     if (sorted[j] > nums[i] && sorted[j] <= max[i]) {
                         nums[i] = sorted[j];
@@ -26,8 +26,8 @@ class Solution {
     }
     private String toTime(int[] nums) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < 4; i++) {
-            sb.append(nums[i] + "");
+        for (int i = 0; i < nums.length; i++) {
+            sb.append(nums[i]);
             if (i == 1) {
                 sb.append(":");
             }
