@@ -1,33 +1,43 @@
 class Solution {
     public List<String> findStrobogrammatic(int n) {
         List<String> res = new ArrayList<>();
-        char[] list = new char[n];
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(1, 1); map.put(6, 9); map.put(9, 6); map.put(8, 8);map.put(0, 0);
-        helper(res, map, list, 0, n - 1);
+        helper(0, n - 1, res, new char[n]);
         return res;
     }
-    private void helper(List<String> res, Map<Integer, Integer> map, char[] list, int left, int right) {
-        if (left > right) {
-            res.add(new String(list));
-            return;
-        }
+    private void helper(int left, int right, List<String> res, char[] array) {
         if (left == right) {
-            list[left] = '0';
-            res.add(new String(list));
-            list[left] = '1';
-            res.add(new String(list));
-            list[left] = '8';
-            res.add(new String(list));
+            array[left] = '0';
+            res.add(new String(array));
+            
+            array[left] = '1';
+            res.add(new String(array));
+            
+            array[left] = '8';
+            res.add(new String(array));
+            return;
+        } else if (left > right) {
+            res.add(new String(array));
             return;
         }
-        for (int i = 0; i < 10; i++) {
-            if ((left == 0 && i == 0) || !map.containsKey(i)) {
-                continue;
-            }
-            list[left] = (char)('0' + i);
-            list[right] = (char)('0' + map.get(i));
-            helper(res, map, list, left + 1, right - 1);
+        if (left != 0) {
+            array[left] = '0';
+            array[right] = '0';
+            helper(left + 1, right - 1, res, array);
         }
+        array[left] = '1';
+        array[right] = '1';
+        helper(left + 1, right - 1, res, array);
+        
+        array[left] = '8';
+        array[right] = '8';
+        helper(left + 1, right - 1, res, array);
+        
+        array[left] = '6';
+        array[right] = '9';
+        helper(left + 1, right - 1, res, array);
+        
+        array[left] = '9';
+        array[right] = '6';
+        helper(left + 1, right - 1, res, array);
     }
 }
